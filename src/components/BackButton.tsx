@@ -1,0 +1,56 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function BackButton() {
+  const [isHovered, setIsHovered] = useState(false);
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/jobs');
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        width: '264px',
+        height: '40px',
+        padding: '0',
+        background: isHovered ? '#ff4d33' : '#ff2400',
+        color: '#ffffff',
+        border: 'none',
+        cursor: 'pointer',
+        fontFamily: 'Roboto, Arial, sans-serif',
+        fontSize: '14px',
+        fontWeight: '500',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        transition: 'all 0.2s ease-in-out',
+        boxShadow: isHovered ? '0 4px 8px rgba(255, 36, 0, 0.3)' : '0 2px 4px rgba(255, 36, 0, 0.2)',
+        transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
+        boxSizing: 'border-box'
+      }}
+    >
+      <svg 
+        width="16" 
+        height="16" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="2" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+        style={{ transform: 'rotate(180deg)', flexShrink: 0 }}
+      >
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+      <span style={{ whiteSpace: 'nowrap', lineHeight: '1' }}>Back to Jobs</span>
+    </button>
+  );
+} 
