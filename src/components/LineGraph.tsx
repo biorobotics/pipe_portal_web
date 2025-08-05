@@ -17,21 +17,23 @@ export default function LineGraph({
   const height = 140;
   const padding = 16;
 
-  // Generate sample data if none provided
-  const graphData = data.length > 0 ? data : Array.from({ length: 50 }, (_, i) => ({
-    time: (i / 49) * totalDuration,
-    value: Math.random() * 8
-  }));
+  // Use provided data or fallback to empty array
+  const graphData = data.length > 0 ? data : [];
 
   // Find min and max values for scaling
   const values = graphData.map(d => d.value);
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
-  const valueRange = maxValue - minValue;
+  const minValue = values.length > 0 ? Math.min(...values) : 0;
+  const maxValue = values.length > 0 ? Math.max(...values) : 8;
+  const valueRange = maxValue - minValue || 1;
+
+  // Calculate the time range for the graph
+  const minTime = graphData.length > 0 ? Math.min(...graphData.map(d => d.time)) : 0;
+  const maxTime = graphData.length > 0 ? Math.max(...graphData.map(d => d.time)) : totalDuration;
+  const timeRange = maxTime - minTime || totalDuration;
 
   // Convert data points to SVG coordinates
   const points = graphData.map((point, index) => {
-    const x = padding + (point.time / totalDuration) * (width - 2 * padding);
+    const x = padding + ((point.time - minTime) / timeRange) * (width - 2 * padding);
     const y = height - padding - ((point.value - minValue) / valueRange) * (height - 2 * padding);
     return `${x},${y}`;
   }).join(' ');
@@ -43,7 +45,15 @@ export default function LineGraph({
   }).join(' ');
 
   // Current time indicator
-  const currentTimeX = padding + (currentTime / totalDuration) * (width - 2 * padding);
+  const currentTimeX = padding + ((currentTime - minTime) / timeRange) * (width - 2 * padding);
+
+  // Format time labels
+  const formatTimeLabel = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div style={{
@@ -91,43 +101,43 @@ export default function LineGraph({
         ))}
       </div>
 
-              {/* X-axis labels */}
+      {/* X-axis labels */}
+      <div style={{
+        position: 'absolute',
+        bottom: '8px',
+        left: '0',
+        right: '0',
+        display: 'flex',
+        justifyContent: 'space-between',
+        paddingLeft: '33px',
+        paddingRight: '33px'
+      }}>
         <div style={{
-          position: 'absolute',
-          bottom: '8px',
-          left: '0',
-          right: '0',
-          display: 'flex',
-          justifyContent: 'space-between',
-          paddingLeft: '33px',
-          paddingRight: '33px'
+          fontSize: '9px',
+          color: '#666666',
+          fontFamily: 'Roboto Mono, monospace'
         }}>
-          <div style={{
-            fontSize: '9px',
-            color: '#666666',
-            fontFamily: 'Roboto Mono, monospace'
-          }}>
-            00:00:00
-          </div>
-          <div style={{
-            fontSize: '9px',
-            color: '#666666',
-            fontFamily: 'Roboto Mono, monospace'
-          }}>
-            01:02:48
-          </div>
+          {formatTimeLabel(minTime)}
         </div>
+        <div style={{
+          fontSize: '9px',
+          color: '#666666',
+          fontFamily: 'Roboto Mono, monospace'
+        }}>
+          {formatTimeLabel(maxTime)}
+        </div>
+      </div>
 
-              {/* SVG Graph */}
-        <svg
-          width={width}
-          height={height}
-          style={{
-            position: 'absolute',
-            top: '20px',
-            left: '33px'
-          }}
-        >
+      {/* SVG Graph */}
+      <svg
+        width={width}
+        height={height}
+        style={{
+          position: 'absolute',
+          top: '20px',
+          left: '33px'
+        }}
+      >
         {/* Grid lines */}
         {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(value => {
           const y = height - padding - ((value - minValue) / valueRange) * (height - 2 * padding);
@@ -152,7 +162,34 @@ export default function LineGraph({
           fill="none"
         />
 
+        {/* Current time indicator line */}
+        <line
+          x1={currentTimeX}
+          y1={padding}
+          x2={currentTimeX}
+          y2={height - padding}
+          stroke="#007bff"
+          strokeWidth="2"
+          strokeDasharray="5,5"
+        />
 
+        {/* Current time indicator circle */}
+        {graphData.length > 0 && (() => {
+          const currentDataPoint = graphData.find(d => d.time >= currentTime) || graphData[graphData.length - 1];
+          const currentValue = currentDataPoint ? currentDataPoint.value : 0;
+          const currentY = height - padding - ((currentValue - minValue) / valueRange) * (height - 2 * padding);
+          
+          return (
+            <circle
+              cx={currentTimeX}
+              cy={currentY}
+              r="4"
+              fill="#007bff"
+              stroke="white"
+              strokeWidth="2"
+            />
+          );
+        })()}
       </svg>
     </div>
   );

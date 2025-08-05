@@ -12,7 +12,8 @@ export default function JobNavigationBar() {
     <div style={{
       background: 'transparent',
       padding: "0px 0px",
-      border: '2px solid #C0C0C0'
+      border: '2px solid #C0C0C0',
+      zIndex: 1
     }}>
       <JobNavLabels 
         labels={jobLabels}

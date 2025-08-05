@@ -5,6 +5,7 @@ import { Roboto, Roboto_Mono } from "next/font/google";
 import { Pixelify_Sans } from "next/font/google";
 import NavIcon from "../components/NavIcon";
 import { NavigationProvider } from "../contexts/NavigationContext";
+import Tooltip from "@/components/Tooltip";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -121,20 +122,26 @@ export default function RootLayout({
             {/* Icons container, fills remaining space */}
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", width: "100%", marginTop: 100 }}>
               {/* Icon 1: Job */}
-              <NavIcon 
-                iconName="job" 
-                alt="Jobs"
-              />
+              <Tooltip content='See Jobs' position='right'>
+                <NavIcon 
+                  iconName="job" 
+                  alt="Jobs"
+                />
+              </Tooltip>
               {/* Icon 2: Map */}
-              <NavIcon 
-                iconName="map" 
-                alt="Map"
-              />
+              <Tooltip content='See Map' position='right'>
+                <NavIcon 
+                  iconName="map" 
+                  alt="Map"
+                />
+              </Tooltip>
               {/* Icon 3: Bot */}
-              <NavIcon 
-                iconName="bot" 
-                alt="Bot"
-              />
+              <Tooltip content='See Robot' position='right'>
+                <NavIcon 
+                  iconName="bot" 
+                  alt="Bot"
+                />
+              </Tooltip>
             </div>
           </aside>
           {/* Main content */}

@@ -20,6 +20,7 @@ function HomeContent() {
     observations, 
     highlightedObservation,
     currentData,
+    graphData,
     setCurrentTime, 
     setHighlightedObservation,
     formatTime 
@@ -51,14 +52,16 @@ function HomeContent() {
       marginLeft: "96px", // Account for the left sidebar
       minHeight: "calc(100vh - 64px)",
       background: "#EAEAEA",
-      position: "relative"
+      position: "relative",
+      zIndex: 0
     }}>
       {/* Navigation area with proper spacing */}
       <div style={{
         position: 'absolute',
         display: 'flex',
         alignItems: 'flex-end',
-        gap: '8px'
+        gap: '8px',
+        zIndex: 1
       }}>
         <BackButton />
         <JobNavigationBar />
@@ -198,10 +201,10 @@ function HomeContent() {
           marginBottom: '8px'
         }}>
           <LineGraph 
-            data={[]}
+            data={graphData}
             currentTime={currentTime}
             totalDuration={totalDuration}
-            title="Title"
+            title="Sensor Data"
           />
         </div>
 

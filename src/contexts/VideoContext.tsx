@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 
 interface Observation {
   id: string;
@@ -9,6 +9,11 @@ interface Observation {
   subtitle: string;
   timestamp: string;
   thumbnailUrl: string;
+}
+
+interface GraphDataPoint {
+  time: number;
+  value: number;
 }
 
 interface VideoContextType {
@@ -23,6 +28,7 @@ interface VideoContextType {
     altitude: number;
     pipeDiameter: number;
   };
+  graphData: GraphDataPoint[];
   setCurrentTime: (time: number) => void;
   setIsPlaying: (playing: boolean) => void;
   setHighlightedObservation: (observationId: string | null) => void;
@@ -37,6 +43,38 @@ export function VideoProvider({ children }: { children: ReactNode }) {
   const [highlightedObservation, setHighlightedObservation] = useState<string | null>(null);
   
   const totalDuration = 3752; // 01:02:32 in seconds
+
+  // Generate rolling graph data that grows with current time
+  const graphData = useMemo(() => {
+    const dataPoints: GraphDataPoint[] = [];
+    const maxDataPoints = 100; // Maximum number of data points to show
+    const timeStep = Math.max(1, Math.floor(currentTime / maxDataPoints)); // Time step between data points
+    
+    // Use a seed for consistent random generation
+    let seed = 12345;
+    const seededRandom = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+    
+    // Generate data points up to current time
+    for (let time = 0; time <= currentTime; time += timeStep) {
+      // Create a realistic pattern with some noise
+      const progress = time / totalDuration;
+      const baseValue = 4 + Math.sin(progress * Math.PI * 4) * 2;
+      const noise = (seededRandom() - 0.5) * 0.5;
+      const value = Math.max(0, Math.min(8, baseValue + noise));
+      
+      dataPoints.push({ time, value });
+    }
+    
+    // If we have too many points, take only the most recent ones
+    if (dataPoints.length > maxDataPoints) {
+      return dataPoints.slice(-maxDataPoints);
+    }
+    
+    return dataPoints;
+  }, [currentTime, totalDuration]);
 
   // Generate time-based data
   const getCurrentData = (time: number) => {
@@ -128,6 +166,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     observations,
     highlightedObservation,
     currentData: getCurrentData(currentTime),
+    graphData,
     setCurrentTime,
     setIsPlaying,
     setHighlightedObservation,
