@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from "react";
 import BackButton from "../components/BackButton";
 import JobNavigationBar from "../components/JobNavigationBar";
 import AddButton from "../components/AddButton";
@@ -10,6 +11,7 @@ import ObservationsGallery from "../components/ObservationsGallery";
 import VideoPanel from "../components/VideoPanel";
 import LineGraph from "../components/LineGraph";
 import VideoPlayer from "../components/VideoPlayer";
+import ObservationModal from "../components/ObservationModal";
 import { JobNavigationProvider } from "../contexts/JobNavigationContext";
 import { VideoProvider, useVideo } from "../contexts/VideoContext";
 
@@ -25,6 +27,8 @@ function HomeContent() {
     setHighlightedObservation,
     formatTime 
   } = useVideo();
+
+  const [isObservationModalOpen, setIsObservationModalOpen] = useState(false);
 
   // Convert observations to the format expected by ObservationsGallery
   const sampleObservations = observations.map(obs => ({
@@ -47,21 +51,29 @@ function HomeContent() {
     }
   };
 
+  const handleAddObservation = () => {
+    setIsObservationModalOpen(true);
+  };
+
+  const handleObservationSubmit = (observationData: any) => {
+    console.log('New observation:', observationData);
+    // Here you would typically save the observation to your data store
+    // For now, we'll just log it
+  };
+
   return (
     <div style={{
-      marginLeft: "96px", // Account for the left sidebar
-      minHeight: "calc(100vh - 64px)",
+      marginLeft: `${(96/1536*100).toFixed(3)}vw`, // Account for the left sidebar
+      minHeight: `calc(100vh - ${(64/776*100).toFixed(3)}vh)`,
       background: "#EAEAEA",
-      position: "relative",
-      zIndex: 0
+      position: "relative"
     }}>
       {/* Navigation area with proper spacing */}
       <div style={{
         position: 'absolute',
         display: 'flex',
         alignItems: 'flex-end',
-        gap: '8px',
-        zIndex: 1
+        gap: `${(8/1536*100).toFixed(3)}vw`
       }}>
         <BackButton />
         <JobNavigationBar />
@@ -70,8 +82,8 @@ function HomeContent() {
       {/* Work Order Explorer - positioned underneath back button */}
       <div style={{
         position: 'absolute',
-        top: '40px', // Position underneath back button
-        left: '0px',
+        top: `${(40/776*100).toFixed(3)}vh`, // Position underneath back button
+        left: '0vw',
         zIndex: 5
       }}>
         <WorkOrderExplorer 
@@ -87,30 +99,30 @@ function HomeContent() {
       {/* Entity Buttons Section - below work order explorer */}
       <div style={{
         position: 'absolute',
-        top: 'calc(40px + 70vh)', // Position below work order explorer
-        left: '0px',
-        width: '264px', // Same width as work order explorer
-        height: 'calc(100vh - 64px - 40px - 70vh)', // Fill remaining viewport height
+        top: `calc(${(40/776*100).toFixed(3)}vh + 70vh)`, // Position below work order explorer
+        left: '0vw',
+        width: `${(264/1536*100).toFixed(3)}vw`, // Same width as work order explorer
+        height: `calc(100vh - ${(64/776*100).toFixed(3)}vh - ${(40/776*100).toFixed(3)}vh - 70vh)`, // Fill remaining viewport height
         background: '#484848', // Match the new color scheme
-        borderLeft: '2px solid #7C7C7C',
+        borderLeft: `${(2/1536*100).toFixed(3)}vw solid #7C7C7C`,
         zIndex: 5
       }}>
         {/* Separator line */}
         <div style={{
-          height: '1px',
+          height: `${(1/776*100).toFixed(3)}vh`,
           background: '#c0c0c0',
           width: '100%'
         }} />
         
         {/* Entity Buttons */}
         <div style={{
-          padding: '8px 0px',
-          height: 'calc(100% - 1px)', // Fill remaining height after separator
+          padding: `${(8/776*100).toFixed(3)}vh 0`,
+          height: `calc(100% - ${(1/776*100).toFixed(3)}vh)`, // Fill remaining height after separator
           overflow: 'hidden', // Prevent scrollbar
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          gap: '16px' // Add more spacing between buttons
+          gap: `${(16/1536*100).toFixed(3)}vw` // Add more spacing between buttons
         }}>
           <EntityButton 
             label="Pipe" 
@@ -134,21 +146,22 @@ function HomeContent() {
       {/* Add Observation Button in top right corner */}
       <div style={{
         position: 'absolute',
-        top: '4px',
-        right: '8px'
+        top: `${(4/776*100).toFixed(3)}vh`,
+        right: `${(12/1536*100).toFixed(3)}vw`
       }}>
         <AddButton 
           text="Add Observation"
           fontFamily="Roboto Mono, monospace"
           fontWeight="400"
+          onClick={handleAddObservation}
         />
       </div>
       
       {/* Data Section - positioned in main content area */}
       <div style={{
         position: 'absolute',
-        top: '48px', // Position below job nav bar (40px + 8px gap)
-        left: '272px', // Position to the right of work order explorer, same margin as job nav bar
+        top: `${(48/776*100).toFixed(3)}vh`, // Position below job nav bar
+        left: `${(272/1536*100).toFixed(3)}vw`, // Position to the right of work order explorer, same margin as job nav bar
         zIndex: 4
       }}>
         <DataSection 
@@ -158,22 +171,34 @@ function HomeContent() {
           pipeDiameter={currentData.pipeDiameter}
         />
       </div>
-
+      {/* Observations Gallery - positioned below Data Section */}
+      <div style={{
+        position: 'absolute',
+        top: `calc(${(48/776*100).toFixed(3)}vh + calc(35vh - ${(40/776*100).toFixed(3)}vh) + ${(8/776*100).toFixed(3)}vh)`, // Position below Data Section with new height
+        left: `${(272/1536*100).toFixed(3)}vw`, // Same left margin as Data Section
+        zIndex: 4
+      }}>
+        <ObservationsGallery 
+          observations={sampleObservations} 
+          highlightedObservation={highlightedObservation}
+          onObservationClick={handleObservationClick}
+        />
+      </div>
       {/* Video Monitoring Section - positioned to the right of data section */}
       <div style={{
         position: 'absolute',
-        top: '48px',
-        left: 'calc(272px + 280px + 12px)', // Right of data section with 12px margin
-        right: '12px', // 12px margin from right edge
-        bottom: '140px', // Space for video player
+        top: `${(48/776*100).toFixed(3)}vh`,
+        left: `calc(${(272/1536*100).toFixed(3)}vw + ${(280/1536*100).toFixed(3)}vw + ${(12/1536*100).toFixed(3)}vw)`, // Right of data section
+        right: `${(12/1536*100).toFixed(3)}vw`, 
+        bottom: `${(140/776*100).toFixed(3)}vh`, // Space for video player
         zIndex: 4
       }}>
         {/* Top row - Cam 1 and Cam 2 */}
         <div style={{
           display: 'flex',
-          gap: '8px',
-          marginBottom: '8px',
-          height: '168px'
+          gap: `${(8/1536*100).toFixed(3)}vw`,
+          marginBottom: `${(8/776*100).toFixed(3)}vh`,
+          height: `${(334/776*100).toFixed(3)}vh`
         }}>
           <div style={{ flex: 1 }}>
             <VideoPanel 
@@ -195,22 +220,23 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* Middle row - Line Graph */}
+        {/* Bottom row - Line Graph */}
         <div style={{
-          height: '168px',
-          marginBottom: '8px'
+          height: `${(168/776*100).toFixed(3)}vh`,
+          marginBottom: `${(8/776*100).toFixed(3)}vh`
         }}>
           <LineGraph 
             data={graphData}
             currentTime={currentTime}
             totalDuration={totalDuration}
             title="Sensor Data"
+            onTimeChange={handleTimeChange}
           />
         </div>
 
-        {/* Bottom row - 360 Camera */}
+        {/* Bottom row - 360 Camera
         <div style={{
-          height: '160px'
+          height: '20.62vh'
         }}>
           <VideoPanel 
             cameraName="360 Camera"
@@ -219,15 +245,15 @@ function HomeContent() {
             width="100%"
             height="100%"
           />
-        </div>
+        </div> */}
       </div>
 
       {/* Video Player - at the bottom */}
       <div style={{
         position: 'absolute',
-        bottom: '8px',
-        left: 'calc(272px + 280px + 12px)', // Same left margin as video monitoring section
-        right: '12px', // Same right margin
+        bottom: `${(8/776*100).toFixed(3)}vh`,
+        left: `calc(${(272/1536*100).toFixed(3)}vw + ${(280/1536*100).toFixed(3)}vw + ${(12/1536*100).toFixed(3)}vw)`, // Same left margin as video monitoring section
+        right: `${(12/1536*100).toFixed(3)}vw`, // Same right margin
         zIndex: 4
       }}>
         <VideoPlayer 
@@ -239,19 +265,12 @@ function HomeContent() {
         />
       </div>
 
-      {/* Observations Gallery - positioned below Data Section */}
-      <div style={{
-        position: 'absolute',
-        top: 'calc(48px + calc(35vh - 40px) + 8px)', // Position below Data Section with new height
-        left: '272px', // Same left margin as Data Section
-        zIndex: 4
-      }}>
-        <ObservationsGallery 
-          observations={sampleObservations} 
-          highlightedObservation={highlightedObservation}
-          onObservationClick={handleObservationClick}
-        />
-      </div>
+      {/* Observation Modal */}
+      <ObservationModal
+        isOpen={isObservationModalOpen}
+        onClose={() => setIsObservationModalOpen(false)}
+        onSubmit={handleObservationSubmit}
+      />
     </div>
   );
 }

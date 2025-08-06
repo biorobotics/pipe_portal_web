@@ -1,17 +1,17 @@
 export default function JobsPage() {
   return (
     <div style={{ 
-      padding: "20px",
-      marginLeft: "96px", // Account for the left sidebar
-      marginTop: "64px", // Account for the header
-      minHeight: "calc(100vh - 64px)",
+      padding: "2.58vh",
+      marginLeft: "6.25vw", // Account for the left sidebar
+      marginTop: "8.25vh", // Account for the header
+      minHeight: "calc(100vh - 8.25vh)",
       background: "#EAEAEA"
     }}>
       <h1 style={{ 
         color: "#242424", 
         fontFamily: "var(--font-roboto), Roboto, Arial, sans-serif",
         fontSize: "2rem",
-        marginBottom: "20px"
+        marginBottom: "2.58vh"
       }}>
         All Jobs
       </h1>

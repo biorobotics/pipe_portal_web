@@ -29,7 +29,7 @@ export default function AddButton({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        padding: '8px 16px',
+        padding: `${(8/776*100).toFixed(3)}vh ${(16/1536*100).toFixed(3)}vw`,
         background: isHovered ? '#ff4d33' : '#ff2400',
         color: '#ffffff',
         border: 'none',
@@ -37,14 +37,16 @@ export default function AddButton({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '8px',
+        gap: `${(8/1536*100).toFixed(3)}vw`,
         transition: 'all 0.2s ease-in-out',
-        boxShadow: isHovered ? '0 4px 8px rgba(255, 36, 0, 0.3)' : '0 2px 4px rgba(255, 36, 0, 0.2)',
-        transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
+        boxShadow: isHovered
+          ? `0 ${(4/776*100).toFixed(3)}vh ${(8/776*100).toFixed(3)}vh rgba(255, 36, 0, 0.3)`
+          : `0 ${(2/776*100).toFixed(3)}vh ${(4/776*100).toFixed(3)}vh rgba(255, 36, 0, 0.2)`,
+        transform: isHovered ? `translateY(-${(1/776*100).toFixed(3)}vh)` : 'translateY(0)',
         boxSizing: 'border-box',
         fontFamily,
         fontWeight,
-        fontSize: '14px',
+        fontSize: `${(14/1536*100).toFixed(3)}vw`,
         whiteSpace: 'nowrap'
       }}
     >

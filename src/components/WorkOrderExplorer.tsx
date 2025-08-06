@@ -26,7 +26,7 @@ export default function WorkOrderExplorer({
 }: WorkOrderExplorerProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedJob, setSelectedJob] = useState<string | null>('job1');
-  const [expandedWorkOrders, setExpandedWorkOrders] = useState<Set<string>>(new Set(['wo1']));
+  const [expandedWorkOrders, setExpandedWorkOrders] = useState<string[]>(['wo1']);
 
   // Sample data
   const workOrders: WorkOrder[] = [
@@ -74,7 +74,7 @@ export default function WorkOrderExplorer({
     // Find the work order that contains this job and expand it
     const workOrder = workOrders.find(wo => wo.jobs.some(job => job.id === jobId));
     if (workOrder) {
-      setExpandedWorkOrders(new Set([...expandedWorkOrders, workOrder.id]));
+      setExpandedWorkOrders(prev => prev.includes(workOrder.id) ? prev : [...prev, workOrder.id]);
     }
     
     if (onJobSelect) {
@@ -83,27 +83,27 @@ export default function WorkOrderExplorer({
   };
 
   const handleWorkOrderToggle = (workOrderId: string, expanded: boolean) => {
-    const newExpanded = new Set(expandedWorkOrders);
-    if (expanded) {
-      newExpanded.add(workOrderId);
-    } else {
-      newExpanded.delete(workOrderId);
-    }
-    setExpandedWorkOrders(newExpanded);
+    setExpandedWorkOrders(prev => {
+      if (expanded) {
+        return prev.includes(workOrderId) ? prev : [...prev, workOrderId];
+      } else {
+        return prev.filter(id => id !== workOrderId);
+      }
+    });
   };
 
   return (
     <div style={{
-      width: '264px',
+      width: `${(264/1536*100).toFixed(3)}vw`,
       background: '#484848',
-      borderLeft: '2px solid #7c7c7c',
-      height: '70vh', // Extend to bottom of page
+      borderLeft: `${(2/1536*100).toFixed(3)}vw solid #7c7c7c`,
+      height: '70vh', // Already vh
       display: 'flex',
       flexDirection: 'column'
     }}>
       {/* Search Bar */}
       <div style={{
-        padding: '12px'
+        padding: `${(12/776*100).toFixed(3)}vh ${(12/1536*100).toFixed(3)}vw`
       }}>
         <input
           type="text"
@@ -112,12 +112,12 @@ export default function WorkOrderExplorer({
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{
             width: '100%',
-            padding: '8px 12px',
+            padding: `${(8/776*100).toFixed(3)}vh ${(12/1536*100).toFixed(3)}vw`,
             background: '#333333',
-            border: '1px solid #555',
-            borderRadius: '4px',
+            border: `${(1/1536*100).toFixed(3)}vw solid #555`,
+            borderRadius: `${(4/1536*100).toFixed(3)}vw`,
             color: '#FFFFFF',
-            fontSize: '14px',
+            fontSize: `${(14/1536*100).toFixed(3)}vw`,
             fontFamily: 'Roboto, Arial, sans-serif',
             boxSizing: 'border-box'
           }}
@@ -128,13 +128,13 @@ export default function WorkOrderExplorer({
       <div style={{
         flex: 1,
         overflowY: 'auto',
-        padding: '8px 0'
+        padding: `${(8/776*100).toFixed(3)}vh 0`
       }}>
         {filteredWorkOrders.map((workOrder) => (
           <WorkOrderItem
             key={workOrder.id}
             name={workOrder.name}
-            isExpanded={expandedWorkOrders.has(workOrder.id)}
+            isExpanded={expandedWorkOrders.includes(workOrder.id)}
             onToggle={(expanded) => handleWorkOrderToggle(workOrder.id, expanded)}
           >
             {workOrder.jobs.map((job) => (

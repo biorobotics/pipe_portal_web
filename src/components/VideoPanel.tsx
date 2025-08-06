@@ -21,7 +21,7 @@ export default function VideoPanel({
       width,
       height,
       background: '#000',
-      borderRadius: isCircular ? '50%' : '0px',
+      borderRadius: isCircular ? '50%' : '0',
       overflow: 'hidden',
       display: 'flex',
       alignItems: 'center',
@@ -29,8 +29,8 @@ export default function VideoPanel({
     }}>
       {/* Video placeholder - using the pipe image */}
       <div style={{
-        width: '100%',
-        height: '100%',
+        width: '24.93vw',
+        height: '41.24vh',
         background: `url('/assets/pipe_interior.png')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -55,15 +55,15 @@ export default function VideoPanel({
       {/* Camera name overlay */}
       <div style={{
         position: 'absolute',
-        top: '8px',
-        left: '8px',
+        top: '1.03vh',
+        left: '0.52vw',
         background: 'rgba(255, 0, 0, 0.6)',
         color: '#fff',
-        padding: '4px 8px',
-        fontSize: '12px',
+        padding: '0.52vh 0.52vw',
+        fontSize: '0.78vw',
         fontWeight: '500',
         fontFamily: 'var(--font-pixelify-sans), Pixelify Sans, sans-serif',
-        borderRadius: '2px',
+        borderRadius: '0.26vh',
         zIndex: 10
       }}>
         {cameraName}
@@ -72,15 +72,15 @@ export default function VideoPanel({
       {/* Timestamp overlay */}
       <div style={{
         position: 'absolute',
-        bottom: '8px',
-        right: '8px',
+        bottom: '1.03vh',
+        right: '0.52vw',
         background: 'rgba(255, 0, 0, 0.6)',
         color: '#fff',
-        padding: '4px 8px',
-        fontSize: '12px',
+        padding: '0.52vh 0.52vw',
+        fontSize: '0.78vw',
         fontWeight: '500',
         fontFamily: 'var(--font-pixelify-sans), Pixelify Sans, sans-serif',
-        borderRadius: '2px',
+        borderRadius: '0.26vh',
         zIndex: 10
       }}>
         {timestamp}

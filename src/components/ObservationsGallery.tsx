@@ -32,25 +32,25 @@ export default function ObservationsGallery({ observations, highlightedObservati
 
   return (
     <div style={{
-      background: 'transparent',
-      border: '2px solid #C0C0C0',
-      padding: '16px',
-      width: '280px',
-      height: 'calc(100vh - 64px - 48px - calc(35vh - 40px) - 16px)', // Increased height to fill remaining space
+      background: '#F0F0F0',
+      border: '0.26vh solid #C0C0C0',
+      padding: '2.06vh',
+      width: '18.23vw',
+      height: 'calc(100vh - 8.25vh - 6.19vh - calc(35vh - 5.15vh) - 2.06vh)', // Increased height to fill remaining space
       display: 'flex',
       flexDirection: 'column',
-      gap: '12px'
+      gap: '1.55vh'
     }}>
       {/* Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingBottom: '8px'
+        paddingBottom: '1.03vh'
       }}>
         <h3 style={{
           margin: 0,
-          fontSize: '16px',
+          fontSize: '1.04vw',
           fontWeight: '600',
           color: '#242424',
           fontFamily: 'Roboto, Arial, sans-serif'
@@ -65,16 +65,16 @@ export default function ObservationsGallery({ observations, highlightedObservati
         overflowY: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        gap: '12px',
-        paddingRight: '8px'
+        gap: '1.55vh',
+        paddingRight: '0.52vw'
       }}>
         {observations.map((observation) => (
           <div
             key={observation.id}
             style={{
-              padding: '8px',
-              border: observation.id === highlightedObservation ? '2px solid #ff2400' : '1px solid #E0E0E0',
-              borderRadius: '0px',
+              padding: '1.03vh',
+              border: observation.id === highlightedObservation ? '0.26vh solid #ff2400' : '0.13vh solid #E0E0E0',
+              borderRadius: '0',
               position: 'relative',
               background: observation.id === highlightedObservation ? '#fff5f5' : 'transparent',
               cursor: 'pointer',
@@ -95,13 +95,13 @@ export default function ObservationsGallery({ observations, highlightedObservati
             {/* Thumbnail */}
             <div style={{
               width: '100%',
-              height: '80px',
+              height: '10.31vh',
               background: `url('/assets/pipe_interior.png')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
-              borderRadius: '0px',
-              marginBottom: '8px',
+              borderRadius: '0',
+              marginBottom: '1.03vh',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -123,10 +123,10 @@ export default function ObservationsGallery({ observations, highlightedObservati
             <div style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '4px'
+              gap: '0.52vh'
             }}>
               <div style={{
-                fontSize: '14px',
+                fontSize: '0.91vw',
                 fontWeight: '500',
                 color: '#242424',
                 fontFamily: 'Roboto Mono, monospace'
@@ -134,14 +134,14 @@ export default function ObservationsGallery({ observations, highlightedObservati
                 {observation.title}
               </div>
               <div style={{
-                fontSize: '12px',
+                fontSize: '0.78vw',
                 color: '#666666',
                 fontFamily: 'Roboto Mono, monospace'
               }}>
                 {observation.subtitle}
               </div>
               <div style={{
-                fontSize: '11px',
+                fontSize: '0.72vw',
                 color: '#999999',
                 fontFamily: 'Roboto Mono, monospace'
               }}>
@@ -154,13 +154,13 @@ export default function ObservationsGallery({ observations, highlightedObservati
               onClick={() => handleObservationClick(observation.id)}
               style={{
                 position: 'absolute',
-                top: '12px',
-                right: '12px',
+                top: '1.55vh',
+                right: '0.78vw',
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                padding: '4px',
-                borderRadius: '2px',
+                padding: '0.52vh',
+                borderRadius: '0.26vh',
                 transition: 'all 0.2s ease-in-out'
               }}
               onMouseEnter={(e) => {
@@ -196,9 +196,9 @@ export default function ObservationsGallery({ observations, highlightedObservati
         onClick={handleViewAllClick}
         style={{
           background: '#484848',
-          border: '1px solid #D0D0D0',
-          padding: '8px 12px',
-          fontSize: '12px',
+          border: '0.13vh solid #D0D0D0',
+          padding: '1.03vh 0.78vw',
+          fontSize: '0.78vw',
           fontWeight: '500',
           color: '#FFFFFF',
           cursor: 'pointer',

@@ -20,6 +20,7 @@ interface VideoContextType {
   currentTime: number;
   totalDuration: number;
   isPlaying: boolean;
+  playbackSpeed: number;
   observations: Observation[];
   highlightedObservation: string | null;
   currentData: {
@@ -31,6 +32,7 @@ interface VideoContextType {
   graphData: GraphDataPoint[];
   setCurrentTime: (time: number) => void;
   setIsPlaying: (playing: boolean) => void;
+  setPlaybackSpeed: (speed: number) => void;
   setHighlightedObservation: (observationId: string | null) => void;
   formatTime: (seconds: number) => string;
 }
@@ -40,15 +42,15 @@ const VideoContext = createContext<VideoContextType | undefined>(undefined);
 export function VideoProvider({ children }: { children: ReactNode }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [highlightedObservation, setHighlightedObservation] = useState<string | null>(null);
   
   const totalDuration = 3752; // 01:02:32 in seconds
 
-  // Generate rolling graph data that grows with current time
+  // Generate consistent graph data spanning the full duration
   const graphData = useMemo(() => {
     const dataPoints: GraphDataPoint[] = [];
-    const maxDataPoints = 100; // Maximum number of data points to show
-    const timeStep = Math.max(1, Math.floor(currentTime / maxDataPoints)); // Time step between data points
+    const numPoints = 100;
     
     // Use a seed for consistent random generation
     let seed = 12345;
@@ -57,8 +59,9 @@ export function VideoProvider({ children }: { children: ReactNode }) {
       return seed / 233280;
     };
     
-    // Generate data points up to current time
-    for (let time = 0; time <= currentTime; time += timeStep) {
+    for (let i = 0; i < numPoints; i++) {
+      const time = (i / (numPoints - 1)) * totalDuration;
+      
       // Create a realistic pattern with some noise
       const progress = time / totalDuration;
       const baseValue = 4 + Math.sin(progress * Math.PI * 4) * 2;
@@ -68,13 +71,8 @@ export function VideoProvider({ children }: { children: ReactNode }) {
       dataPoints.push({ time, value });
     }
     
-    // If we have too many points, take only the most recent ones
-    if (dataPoints.length > maxDataPoints) {
-      return dataPoints.slice(-maxDataPoints);
-    }
-    
     return dataPoints;
-  }, [currentTime, totalDuration]);
+  }, [totalDuration]);
 
   // Generate time-based data
   const getCurrentData = (time: number) => {
@@ -136,7 +134,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Auto-play functionality
+  // Auto-play functionality with playback speed
   useEffect(() => {
     let interval: NodeJS.Timeout;
     
@@ -147,7 +145,7 @@ export function VideoProvider({ children }: { children: ReactNode }) {
             setIsPlaying(false);
             return prev;
           }
-          return prev + 1;
+          return prev + playbackSpeed;
         });
       }, 1000);
     }
@@ -157,18 +155,20 @@ export function VideoProvider({ children }: { children: ReactNode }) {
         clearInterval(interval);
       }
     };
-  }, [isPlaying, totalDuration]);
+  }, [isPlaying, totalDuration, playbackSpeed]);
 
   const value: VideoContextType = {
     currentTime,
     totalDuration,
     isPlaying,
+    playbackSpeed,
     observations,
     highlightedObservation,
     currentData: getCurrentData(currentTime),
     graphData,
     setCurrentTime,
     setIsPlaying,
+    setPlaybackSpeed,
     setHighlightedObservation,
     formatTime
   };

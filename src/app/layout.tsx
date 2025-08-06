@@ -87,11 +87,11 @@ export default function RootLayout({
                   alignItems: "center",
                   justifyContent: "center",
                   width: 36,
-                  height: 36,
+                  height: `${(36/776*100).toFixed(3)}vh`,
                   borderRadius: "50%",
                   background: "#f3f4f6",
-                  border: "1px solid #e5e7eb",
-                  fontSize: 20,
+                  border: `${(1/1536*100).toFixed(3)}vw solid #e5e7eb`,
+                  fontSize: `${(20/1536*100).toFixed(3)}vw`,
                   color: "#555",
                 }}
                 title="Profile"
@@ -100,8 +100,8 @@ export default function RootLayout({
                 <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-2.2 3.6-4 8-4s8 1.8 8 4"/></svg>
               </span>
             </div>
-            {/* 2px line at the very bottom edge of the header */}
-            <div style={{ position: "absolute", left: 0, bottom: 0, height: 2, width: "100%", background: "#484848", zIndex: 3 }} />
+            {/* line at the very bottom edge of the header */}
+            <div style={{ position: "absolute", left: 0, bottom: 0, height: `${(2/776*100).toFixed(3)}vh`, width: "100%", background: "#484848", zIndex: 3 }} />
           </header>
           {/* Sidebar Navigation */}
           <aside
@@ -109,14 +109,14 @@ export default function RootLayout({
               position: "fixed",
               top: 0,
               left: 0,
-              width: 96,
+              width: `${(96/1536*100).toFixed(3)}vw`,
               height: "100vh",
               background: "#242424",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               zIndex: 1,
-              borderRight: "1px solid #222"
+              borderRight: `${(1/1536*100).toFixed(3)}vw solid #222`
             }}
           >
             {/* Icons container, fills remaining space */}

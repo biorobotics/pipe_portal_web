@@ -17,23 +17,23 @@ export default function BackButton() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        width: '264px',
-        height: '40px',
+        width: '17.19vw',
+        height: '5.15vh',
         padding: '0',
         background: isHovered ? '#ff4d33' : '#ff2400',
         color: '#ffffff',
         border: 'none',
         cursor: 'pointer',
         fontFamily: 'Roboto, Arial, sans-serif',
-        fontSize: '14px',
+        fontSize: '0.91vw',
         fontWeight: '500',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '8px',
+        gap: '1.03vh',
         transition: 'all 0.2s ease-in-out',
-        boxShadow: isHovered ? '0 4px 8px rgba(255, 36, 0, 0.3)' : '0 2px 4px rgba(255, 36, 0, 0.2)',
-        transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
+        boxShadow: isHovered ? '0 0.52vh 1.03vh rgba(255, 36, 0, 0.3)' : '0 0.26vh 0.52vh rgba(255, 36, 0, 0.2)',
+        transform: isHovered ? 'translateY(-0.13vh)' : 'translateY(0)',
         boxSizing: 'border-box'
       }}
     >

@@ -50,24 +50,24 @@ export default function DataSection({
   return (
     <div style={{
       background: 'transparent',
-      border: '2px solid #C0C0C0',
-      padding: '16px',
-      width: '280px', // Increased width to prevent DMS wrapping
-      height: 'calc(35vh - 40px)', // Reduced height to give more space to observations
+      border: `${(2/1536*100).toFixed(3)}vw solid #C0C0C0`,
+      padding: `${(16/776*100).toFixed(3)}vh`,
+      width: `${(280/1536*100).toFixed(3)}vw`, // Increased width to prevent DMS wrapping
+      height: `calc(35vh - ${(40/776*100).toFixed(3)}vh)`, // Reduced height to give more space to observations
       display: 'flex',
       flexDirection: 'column',
-      gap: '12px'
+      gap: `${(12/1536*100).toFixed(3)}vw`
     }}>
       {/* Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingBottom: '8px'
+        paddingBottom: `${(8/776*100).toFixed(3)}vh`
       }}>
         <h3 style={{
           margin: 0,
-          fontSize: '16px',
+          fontSize: `${(16/1536*100).toFixed(3)}vw`,
           fontWeight: '600',
           color: '#242424',
           fontFamily: 'Roboto, Arial, sans-serif'
@@ -80,15 +80,15 @@ export default function DataSection({
           onClick={toggleFormat}
           style={{
             background: '#484848',
-            border: '1px solid #D0D0D0',
-            padding: '8px 12px',
-            fontSize: '12px',
+            border: `${(1/1536*100).toFixed(3)}vw solid #D0D0D0`,
+            padding: `${(8/776*100).toFixed(3)}vh ${(12/1536*100).toFixed(3)}vw`,
+            fontSize: `${(12/1536*100).toFixed(3)}vw`,
             fontWeight: '500',
             color: '#FFFFFF',
             cursor: 'pointer',
             fontFamily: 'Roboto Mono, monospace',
             transition: 'all 0.2s ease-in-out',
-            width: '80px'
+            width: `${(80/1536*100).toFixed(3)}vw`
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = '#8C8C8C';
@@ -105,7 +105,7 @@ export default function DataSection({
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '12px',
+        gap: '1.55vh',
         flex: 1
       }}>
         {/* Latitude */}
@@ -115,14 +115,14 @@ export default function DataSection({
           alignItems: 'center'
         }}>
           <span style={{
-            fontSize: '14px',
+            fontSize: '0.91vw',
             color: '#666666',
             fontFamily: 'Roboto Mono, monospace'
           }}>
             Latitude:
           </span>
           <span style={{
-            fontSize: '14px',
+            fontSize: '0.91vw',
             fontWeight: '500',
             color: '#242424',
             fontFamily: 'Roboto Mono, monospace'
@@ -138,14 +138,14 @@ export default function DataSection({
           alignItems: 'center'
         }}>
           <span style={{
-            fontSize: '14px',
+            fontSize: '0.91vw',
             color: '#666666',
             fontFamily: 'Roboto Mono, monospace'
           }}>
             Longitude:
           </span>
           <span style={{
-            fontSize: '14px',
+            fontSize: '0.91vw',
             fontWeight: '500',
             color: '#242424',
             fontFamily: 'Roboto Mono, monospace'
@@ -161,14 +161,14 @@ export default function DataSection({
           alignItems: 'center'
         }}>
           <span style={{
-            fontSize: '14px',
+            fontSize: '0.91vw',
             color: '#666666',
             fontFamily: 'Roboto Mono, monospace'
           }}>
             Altitude:
           </span>
           <span style={{
-            fontSize: '14px',
+            fontSize: '0.91vw',
             fontWeight: '500',
             color: '#242424',
             fontFamily: 'Roboto Mono, monospace'
@@ -184,14 +184,14 @@ export default function DataSection({
           alignItems: 'center'
         }}>
           <span style={{
-            fontSize: '14px',
+            fontSize: '0.91vw',
             color: '#666666',
             fontFamily: 'Roboto Mono, monospace'
           }}>
             Pipe Diameter:
           </span>
           <span style={{
-            fontSize: '14px',
+            fontSize: '0.91vw',
             fontWeight: '500',
             color: '#242424',
             fontFamily: 'Roboto Mono, monospace'

@@ -29,12 +29,12 @@ export default function JobItem({
       style={{
         display: 'flex',
         alignItems: 'center',
-        padding: '8px 12px',
-        paddingLeft: '32px',
-        marginRight: '8px',
+        padding: '1.03vh 0.78vw',
+        paddingLeft: '2.08vw',
+        marginRight: '0.52vw',
         cursor: 'pointer',
         background: isHovered || isSelected ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
-        border: isSelected ? '1px solid #FFFFFF' : 'none',
+        border: isSelected ? '0.13vh solid #FFFFFF' : 'none',
         borderRadius: '0',
         transition: 'all 0.2s ease-in-out',
         userSelect: 'none'
@@ -43,7 +43,7 @@ export default function JobItem({
       {/* Job Name */}
       <span style={{
         color: '#FFFFFF',
-        fontSize: '14px',
+        fontSize: '0.91vw',
         fontFamily: 'Roboto, Arial, sans-serif',
         flex: 1
       }}>

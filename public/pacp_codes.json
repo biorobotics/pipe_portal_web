@@ -1,0 +1,990 @@
+{
+  "name": "PACP Codes",
+  "children": [
+    {
+      "name": "Structural",
+      "children": [
+        {
+          "name": "Crack (C)",
+          "children": [
+            {
+              "name": "Circumferential (C)",
+              "code": "CC"
+            },
+            {
+              "name": "Longitudinal (L)",
+              "code": "CL"
+            },
+            {
+              "name": "Multiple (M)",
+              "code": "CM"
+            },
+            {
+              "name": "Spiral (S)",
+              "code": "CS"
+            }
+          ]
+        },
+        {
+          "name": "Fracture (F)",
+          "children": [
+            {
+              "name": "Circumferential (C)",
+              "code": "FC"
+            },
+            {
+              "name": "Longitudinal (L)",
+              "code": "FL"
+            },
+            {
+              "name": "Multiple (M)",
+              "code": "FM"
+            },
+            {
+              "name": "Spiral (S)",
+              "code": "FS"
+            }
+          ]
+        },
+        {
+          "name": "Pipe Failures (Silent)",
+          "children": [
+            {
+              "name": "Broken (B)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "B"
+                },
+                {
+                  "name": "Soil Visible (SV)",
+                  "code": "BSV"
+                },
+                {
+                  "name": "Void Visible (VV)",
+                  "code": "BVV"
+                }
+              ]
+            },
+            {
+              "name": "Hole (H)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "H"
+                },
+                {
+                  "name": "Soil Visible (SV)",
+                  "code": "HSV"
+                },
+                {
+                  "name": "Void Visible (VV)",
+                  "code": "HVV"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Collapse (X)",
+          "children": [
+            {
+              "name": "Pipe (P)",
+              "code": "XP"
+            },
+            {
+              "name": "Brick (B)",
+              "code": "XB"
+            }
+          ]
+        },
+        {
+          "name": "Deformed (D)",
+          "children": [
+            {
+              "name": "Pipe (P)",
+              "code": "D"
+            },
+            {
+              "name": "Brick (B)",
+              "children": [
+                {
+                  "name": "Horizontally (H)",
+                  "code": "DH"
+                },
+                {
+                  "name": "Vertically (V)",
+                  "code": "DV"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Joint (J)",
+          "children": [
+            {
+              "name": "Offset (displaced) (O)",
+              "children": [
+                {
+                  "name": "Medium (M)",
+                  "code": "JOM"
+                },
+                {
+                  "name": "Large (L)",
+                  "code": "JOL"
+                }
+              ]
+            },
+            {
+              "name": "Separated (open) (S)",
+              "children": [
+                {
+                  "name": "Medium (M)",
+                  "code": "JSM"
+                },
+                {
+                  "name": "Large (L)",
+                  "code": "JSL"
+                }
+              ]
+            },
+            {
+              "name": "Angular (A)",
+              "children": [
+                {
+                  "name": "Medium (M)",
+                  "code": "JAM"
+                },
+                {
+                  "name": "Large (L)",
+                  "code": "JAL"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Surface Damage Chemical (S)",
+          "children": [
+            {
+              "name": "Roughness Increased (R)",
+              "code": "SRIC"
+            },
+            {
+              "name": "Surface Spalling (SS)",
+              "code": "SSSC"
+            },
+            {
+              "name": "Aggregate Visible (AV)",
+              "code": "SAVC"
+            },
+            {
+              "name": "Aggregate Projecting (AP)",
+              "code": "SAPC"
+            },
+            {
+              "name": "Aggregate Missing (AM)",
+              "code": "SAMC"
+            },
+            {
+              "name": "Reinforcement Visible (RV)",
+              "code": "SRVC"
+            },
+            {
+              "name": "Reinforcement Corroded (RC)",
+              "code": "SRCC"
+            },
+            {
+              "name": "Missing Wall (MW)",
+              "code": "SMWC"
+            },
+            {
+              "name": "Other (Z)",
+              "code": "SZC"
+            }
+          ]
+        },
+        {
+          "name": "Surface Damage Mechanical (M)",
+          "children": [
+            {
+              "name": "Roughness Increased (R)",
+              "code": "SRIM"
+            },
+            {
+              "name": "Surface Spalling (SS)",
+              "code": "SSSM"
+            },
+            {
+              "name": "Aggregate Visible (AV)",
+              "code": "SAVM"
+            },
+            {
+              "name": "Aggregate Projecting (AP)",
+              "code": "SAPM"
+            },
+            {
+              "name": "Aggregate Missing (AM)",
+              "code": "SAMM"
+            },
+            {
+              "name": "Reinforcement Visible (RV)",
+              "code": "SRVM"
+            },
+            {
+              "name": "Reinforcement Corroded (RC)",
+              "code": "SRCM"
+            },
+            {
+              "name": "Missing Wall (MW)",
+              "code": "SMWM"
+            },
+            {
+              "name": "Other (Z)",
+              "code": "SZM"
+            }
+          ]
+        },
+        {
+          "name": "Surface Damage Not Evident (Z)",
+          "children": [
+            {
+              "name": "Roughness Increased (R)",
+              "code": "SRIZ"
+            },
+            {
+              "name": "Surface Spalling (SS)",
+              "code": "SSSZ"
+            },
+            {
+              "name": "Aggregate Visible (AV)",
+              "code": "SAVZ"
+            },
+            {
+              "name": "Aggregate Projecting (AP)",
+              "code": "SAPZ"
+            },
+            {
+              "name": "Aggregate Missing (AM)",
+              "code": "SAMZ"
+            },
+            {
+              "name": "Reinforcement Visible (RV)",
+              "code": "SRVZ"
+            },
+            {
+              "name": "Reinforcement Corroded (RC)",
+              "code": "SRCZ"
+            },
+            {
+              "name": "Missing Wall (MW)",
+              "code": "SMWZ"
+            },
+            {
+              "name": "Other (Z)",
+              "code": "SZZ"
+            }
+          ]
+        },
+        {
+          "name": "Surface Damage (Metal Pipes)",
+          "children": [
+            {
+              "name": "Corrosion (CP)",
+              "code": "SCP"
+            }
+          ]
+        },
+        {
+          "name": "Lining Failure (LF)",
+          "children": [
+            {
+              "name": "Detached (D)",
+              "code": "LFD"
+            },
+            {
+              "name": "Defective End (DE)",
+              "code": "LFDE"
+            },
+            {
+              "name": "Blistered (B)",
+              "code": "LFB"
+            },
+            {
+              "name": "Service Cut Shifted (CS)",
+              "code": "LFCS"
+            },
+            {
+              "name": "Abandoned Connection (AC)",
+              "code": "LFAC"
+            },
+            {
+              "name": "Overcut Service (OC)",
+              "code": "LFOC"
+            },
+            {
+              "name": "Undercut Service (UC)",
+              "code": "LFUC"
+            },
+            {
+              "name": "Buckled (BK)",
+              "code": "LFBK"
+            },
+            {
+              "name": "Wrinkled (W)",
+              "code": "LFW"
+            },
+            {
+              "name": "Other (Z)",
+              "code": "LFZ"
+            }
+          ]
+        },
+        {
+          "name": "Weld Failure (WF)",
+          "children": [
+            {
+              "name": "Circumferential (C)",
+              "code": "WFC"
+            },
+            {
+              "name": "Longitudinal (L)",
+              "code": "WFL"
+            },
+            {
+              "name": "Multiple (M)",
+              "code": "WFM"
+            },
+            {
+              "name": "Spiral (S)",
+              "code": "WFS"
+            }
+          ]
+        },
+        {
+          "name": "Point Repair (RP)",
+          "children": [
+            {
+              "name": "Localized Lining (L)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "RPL"
+                },
+                {
+                  "name": "Defective (D)",
+                  "code": "RPLD"
+                }
+              ]
+            },
+            {
+              "name": "Patch Repair (P)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "RPP"
+                },
+                {
+                  "name": "Defective (D)",
+                  "code": "RPPD"
+                }
+              ]
+            },
+            {
+              "name": "Pipe Replaced (R)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "RPR"
+                },
+                {
+                  "name": "Defective (D)",
+                  "code": "RPRD"
+                }
+              ]
+            },
+            {
+              "name": "Other (Z)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "RPRZ"
+                },
+                {
+                  "name": "Defective (D)",
+                  "code": "RPRZD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Brickwork (Silent)",
+          "children": [
+            {
+              "name": "Displaced (DB)",
+              "code": "DB"
+            },
+            {
+              "name": "Missing (MB)",
+              "code": "MB"
+            },
+            {
+              "name": "Dropped Invert (DI)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "DI"
+                },
+                {
+                  "name": "Slight",
+                  "code": "MMS"
+                },
+                {
+                  "name": "Medium",
+                  "code": "MMM"
+                },
+                {
+                  "name": "Large",
+                  "code": "MML"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Operational & Maintenance",
+      "children": [
+        {
+          "name": "Deposits Attached (DA)",
+          "children": [
+            {
+              "name": "Encrustation (E)",
+              "code": "DAE"
+            },
+            {
+              "name": "Grease (G)",
+              "code": "DAGS"
+            },
+            {
+              "name": "Ragging (R)",
+              "code": "DAR"
+            },
+            {
+              "name": "Other (Z)",
+              "code": "DAZ"
+            }
+          ]
+        },
+        {
+          "name": "Deposits Settled (DS)",
+          "children": [
+            {
+              "name": "Hard/Compacted (C)",
+              "code": "DSC"
+            },
+            {
+              "name": "Fine (F)",
+              "code": "DSF"
+            },
+            {
+              "name": "Gravel (G)",
+              "code": "DSGV"
+            },
+            {
+              "name": "Other (Z)",
+              "code": "DSZ"
+            }
+          ]
+        },
+        {
+          "name": "Deposits Ingress (DN)",
+          "children": [
+            {
+              "name": "Fines silt/sand (F)",
+              "code": "DNF"
+            },
+            {
+              "name": "Gravel (G)",
+              "code": "DNGV"
+            },
+            {
+              "name": "Other (Z)",
+              "code": "DNZ"
+            }
+          ]
+        },
+        {
+          "name": "Roots (R)",
+          "children": [
+            {
+              "name": "Fine (F)",
+              "children": [
+                {
+                  "name": "Barrel (B)",
+                  "code": "RFB"
+                },
+                {
+                  "name": "Laterals (L)",
+                  "code": "RFL"
+                },
+                {
+                  "name": "Connections (C)",
+                  "code": "RFC"
+                },
+                {
+                  "name": "N/A",
+                  "code": "RF"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Roots (R) at a Joint",
+          "children": [
+            {
+              "name": "Tap (T)",
+              "children": [
+                {
+                  "name": "Barrel (B)",
+                  "code": "RTB"
+                },
+                {
+                  "name": "Laterals (L)",
+                  "code": "RTL"
+                },
+                {
+                  "name": "Connections (C)",
+                  "code": "RTC"
+                },
+                {
+                  "name": "N/A",
+                  "code": "RT"
+                }
+              ]
+            },
+            {
+              "name": "Medium (M)",
+              "children": [
+                {
+                  "name": "Barrel (B)",
+                  "code": "RMB"
+                },
+                {
+                  "name": "Laterals (L)",
+                  "code": "RML"
+                },
+                {
+                  "name": "Connections (C)",
+                  "code": "RMC"
+                },
+                {
+                  "name": "N/A",
+                  "code": "RM"
+                }
+              ]
+            },
+            {
+              "name": "Ball (B)",
+              "children": [
+                {
+                  "name": "Barrel (B)",
+                  "code": "RBB"
+                },
+                {
+                  "name": "Laterals (L)",
+                  "code": "RBL"
+                },
+                {
+                  "name": "Connections (C)",
+                  "code": "RBC"
+                },
+                {
+                  "name": "N/A",
+                  "code": "RB"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Infiltration (I)",
+          "children": [
+            {
+              "name": "Weeper (W)",
+              "code": "IW"
+            },
+            {
+              "name": "Dripper (D)",
+              "code": "ID"
+            },
+            {
+              "name": "Runner (R)",
+              "code": "IR"
+            },
+            {
+              "name": "Gusher (G)",
+              "code": "IB"
+            }
+          ]
+        },
+        {
+          "name": "Obstacles/Obstructions (OB)",
+          "children": [
+            {
+              "name": "Brick or Masonry (B)",
+              "code": "OBB"
+            },
+            {
+              "name": "Pipe Material in Invert (M)",
+              "code": "OBM"
+            },
+            {
+              "name": "Object Protruding Thru Wall (I)",
+              "code": "OBI"
+            },
+            {
+              "name": "Object Wedged in Joint (J)",
+              "code": "OBJ"
+            },
+            {
+              "name": "Object Thru Connection (C)",
+              "code": "OBC"
+            },
+            {
+              "name": "External Pipe or Cable in Sewer (P)",
+              "code": "OBP"
+            },
+            {
+              "name": "Built into Structure (S)",
+              "code": "OBS"
+            },
+            {
+              "name": "Construction Debris (N)",
+              "code": "OBN"
+            },
+            {
+              "name": "Rocks (R)",
+              "code": "OBR"
+            },
+            {
+              "name": "Other Objects (Z)",
+              "code": "OBZ"
+            }
+          ]
+        },
+        {
+          "name": "Vermin (V)",
+          "children": [
+            {
+              "name": "Rat (R)",
+              "code": "VR"
+            },
+            {
+              "name": "Cockroach (C)",
+              "code": "VC"
+            },
+            {
+              "name": "Other (Z)",
+              "code": "VZ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Construction Features",
+      "children": [
+        {
+          "name": "Tap (T)",
+          "children": [
+            {
+              "name": "Factory Made (F)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "TF"
+                },
+                {
+                  "name": "Capped (C)",
+                  "code": "TFC"
+                },
+                {
+                  "name": "Defective (D)",
+                  "code": "TFD"
+                },
+                {
+                  "name": "Intruding (I)",
+                  "code": "TFI"
+                },
+                {
+                  "name": "Active (A)",
+                  "code": "TFA"
+                }
+              ]
+            },
+            {
+              "name": "Break-In/Hammer (B)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "TB"
+                },
+                {
+                  "name": "Capped (C)",
+                  "code": "TBC"
+                },
+                {
+                  "name": "Defective (D)",
+                  "code": "TBD"
+                },
+                {
+                  "name": "Intruding (I)",
+                  "code": "TBI"
+                },
+                {
+                  "name": "Active (A)",
+                  "code": "TBA"
+                }
+              ]
+            },
+            {
+              "name": "Saddle (S)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "TS"
+                },
+                {
+                  "name": "Capped (C)",
+                  "code": "TSC"
+                },
+                {
+                  "name": "Defective (D)",
+                  "code": "TSD"
+                },
+                {
+                  "name": "Intruding (I)",
+                  "code": "TSI"
+                },
+                {
+                  "name": "Active (A)",
+                  "code": "TSA"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Intruding Seal Material (IS)",
+          "children": [
+            {
+              "name": "N/A",
+              "code": "IS"
+            },
+            {
+              "name": "Sealing Ring (SR)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "ISSR"
+                },
+                {
+                  "name": "Hanging",
+                  "code": "ISSRH"
+                },
+                {
+                  "name": "Broken",
+                  "code": "ISSRB"
+                }
+              ]
+            },
+            {
+              "name": "Grout (GT)",
+              "code": "ISGT"
+            },
+            {
+              "name": "Other (Z)",
+              "code": "ISZ"
+            }
+          ]
+        },
+        {
+          "name": "Line (L)",
+          "children": [
+            {
+              "name": "Left (L)",
+              "code": "LL"
+            },
+            {
+              "name": "Left/Up (LU)",
+              "code": "LLU"
+            },
+            {
+              "name": "Left/Down (LD)",
+              "code": "LLD"
+            },
+            {
+              "name": "Right (R)",
+              "code": "LR"
+            },
+            {
+              "name": "Right/Up (RU)",
+              "code": "LRU"
+            },
+            {
+              "name": "Right/Down (RD)",
+              "code": "LRD"
+            },
+            {
+              "name": "Up (U)",
+              "code": "LU"
+            },
+            {
+              "name": "Down (D)",
+              "code": "LD"
+            }
+          ]
+        },
+        {
+          "name": "Access Point (A)",
+          "children": [
+            {
+              "name": "Cleanout (CO)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "ACO"
+                },
+                {
+                  "name": "Mainline (M)",
+                  "code": "ACOM"
+                },
+                {
+                  "name": "Property (P)",
+                  "code": "ACOP"
+                },
+                {
+                  "name": "House (H)",
+                  "code": "ACOH"
+                }
+              ]
+            },
+            {
+              "name": "Discharge Point (DP)",
+              "code": "ADP"
+            },
+            {
+              "name": "Junction Box (JB)",
+              "code": "AJB"
+            },
+            {
+              "name": "Meter (M)",
+              "code": "AM"
+            },
+            {
+              "name": "Manhole (MH)",
+              "code": "AMH"
+            },
+            {
+              "name": "Other Special Chamber (OC)",
+              "code": "AOC"
+            },
+            {
+              "name": "Tee Connection (TC)",
+              "code": "ATC"
+            },
+            {
+              "name": "WW Access Device (WA)",
+              "code": "AWA"
+            },
+            {
+              "name": "Wet Well (WW)",
+              "code": "AWW"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Other",
+      "children": [
+        {
+          "name": "Miscellaneous (M)",
+          "children": [
+            {
+              "name": "Camera Underwater (CU)",
+              "code": "MCU"
+            },
+            {
+              "name": "Dimension/Diam/Shape Change (SC)",
+              "code": "MSC"
+            },
+            {
+              "name": "General Observation (GO)",
+              "code": "MGO"
+            },
+            {
+              "name": "General Photograph (GP)",
+              "code": "MGP"
+            },
+            {
+              "name": "Material Change (MC)",
+              "code": "MMC"
+            },
+            {
+              "name": "Lining Change (LC)",
+              "code": "MLC"
+            },
+            {
+              "name": "Joint Length Change (JL)",
+              "code": "MJL"
+            },
+            {
+              "name": "Survey Abandoned (SA)",
+              "code": "MSA"
+            },
+            {
+              "name": "Water Level (WL)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "MWL"
+                },
+                {
+                  "name": "(S)",
+                  "code": "MWLS"
+                }
+              ]
+            },
+            {
+              "name": "Water Mark (WM)",
+              "code": "MWM"
+            },
+            {
+              "name": "Dye Test (Y)",
+              "children": [
+                {
+                  "name": "N/A",
+                  "code": "MY"
+                },
+                {
+                  "name": "Visible (V)",
+                  "code": "MYV"
+                },
+                {
+                  "name": "Not Visible (NV)",
+                  "code": "MYN"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -29,32 +29,32 @@ export default function JobNavLabels({ labels, selectedLabel, onLabelClick }: Jo
     const isHovered = hoveredLabel === label;
     
     let background = 'transparent';
-    let border = '2px solid transparent';
+    let border = '0.26vh solid transparent';
     
     if (isSelected && isHovered) {
       background = 'rgba(36, 36, 36, 0.1)'; // Dark transparent background
-      border = '2px solid #242424';
+      border = '0.26vh solid #242424';
     } else if (isSelected) {
       background = 'rgba(36, 36, 36, 0.1)'; // Dark transparent background
-      border = '2px solid #242424'; // Dark outline
+      border = '0.26vh solid #242424'; // Dark outline
     } else if (isHovered) {
       background = 'rgba(36, 36, 36, 0.1)'; // Dark transparent background
-      border = '2px solid transparent';
+      border = '0.26vh solid transparent';
     }
 
     return {
-      padding: '4px 24px',
+      padding: '0.52vh 1.56vw',
       background,
       border,
       cursor: 'pointer',
       fontFamily: 'Roboto, Arial, sans-serif',
-      fontSize: '14px',
+      fontSize: '0.91vw',
       fontWeight: '500',
       color: isSelected ? '#242424' : '#242424',
       transition: 'all 0.2s ease-in-out',
       whiteSpace: 'nowrap' as const,
       display: 'inline-block',
-      marginRight: '0px'
+      marginRight: '0'
     };
   };
 
@@ -62,7 +62,7 @@ export default function JobNavLabels({ labels, selectedLabel, onLabelClick }: Jo
     <div style={{
       display: 'flex',
       alignItems: 'center',
-      gap: '4px',
+      gap: '0.52vh',
       padding: '0'
     }}>
       {labels.map((label) => (

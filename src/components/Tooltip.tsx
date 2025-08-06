@@ -39,15 +39,15 @@ export default function Tooltip({
       zIndex: 10,
       backgroundColor: '#333',
       color: 'white',
-      padding: '8px 12px',
-      borderRadius: '4px',
-      fontSize: '12px',
+      padding: '1.03vh 0.78vw',
+      borderRadius: '0.52vh',
+      fontSize: '0.78vw',
       fontFamily: 'Roboto Mono, monospace',
       whiteSpace: 'nowrap' as const,
       pointerEvents: 'none' as const,
       opacity: isVisible ? 1 : 0,
       transition: 'opacity 0.2s ease-in-out',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+      boxShadow: '0 0.26vh 1.03vh rgba(0,0,0,0.3)',
     };
 
     switch (position) {
@@ -57,7 +57,7 @@ export default function Tooltip({
           bottom: '100%',
           left: '50%',
           transform: 'translateX(-50%)',
-          marginBottom: '8px',
+          marginBottom: '1.03vh',
         };
       case 'bottom':
         return {
@@ -65,7 +65,7 @@ export default function Tooltip({
           top: '100%',
           left: '50%',
           transform: 'translateX(-50%)',
-          marginTop: '8px',
+          marginTop: '1.03vh',
         };
       case 'left':
         return {
@@ -73,7 +73,7 @@ export default function Tooltip({
           right: '100%',
           top: '50%',
           transform: 'translateY(-50%)',
-          marginRight: '8px',
+          marginRight: '0.52vw',
         };
       case 'right':
         return {
@@ -81,7 +81,7 @@ export default function Tooltip({
           left: '100%',
           top: '50%',
           transform: 'translateY(-50%)',
-          marginLeft: '8px',
+          marginLeft: '0.52vw',
         };
       default:
         return baseStyles;

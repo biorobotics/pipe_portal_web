@@ -35,16 +35,16 @@ export default function EntityButton({ label, entityId, onClick }: EntityButtonP
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '8px 16px',
+        padding: `${(8/776*100).toFixed(3)}vh ${(16/1536*100).toFixed(3)}vw`,
         background: isHovered ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
-        borderRadius: '0px',
+        borderRadius: '0vw',
         cursor: 'pointer',
         transition: 'all 0.2s ease-in-out',
         border: 'none',
-        minHeight: '32px',
+        minHeight: `${(32/776*100).toFixed(3)}vh`,
         boxSizing: 'border-box' as const,
-        marginLeft: '8px',
-        marginRight: '8px'
+        marginLeft: `${(8/1536*100).toFixed(3)}vw`,
+        marginRight: `${(8/1536*100).toFixed(3)}vw`
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -54,9 +54,9 @@ export default function EntityButton({ label, entityId, onClick }: EntityButtonP
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '4px',
+        gap: `${(4/1536*100).toFixed(3)}vw`,
         fontFamily: 'Roboto Mono, monospace',
-        fontSize: '14px',
+        fontSize: `${(14/1536*100).toFixed(3)}vw`,
         color: '#FFFFFF'
       }}>
         <span style={{ fontWeight: 'bold' }}>{label}:</span>
@@ -67,14 +67,14 @@ export default function EntityButton({ label, entityId, onClick }: EntityButtonP
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '4px'
+        gap: `${(4/1536*100).toFixed(3)}vw`
       }}>
         <img
           src="/assets/arrow.svg"
           alt="Arrow"
           style={{
-            width: '16px',
-            height: '16px',
+            width: `${(16/1536*100).toFixed(3)}vw`,
+            height: `${(16/776*100).toFixed(3)}vh`,
             filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' // Make arrow white
           }}
         />
@@ -82,8 +82,8 @@ export default function EntityButton({ label, entityId, onClick }: EntityButtonP
           src={getIconSrc()}
           alt={label}
           style={{
-            width: '16px',
-            height: '16px',
+            width: `${(16/1536*100).toFixed(3)}vw`,
+            height: `${(16/776*100).toFixed(3)}vh`,
             filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' // Make icon white
           }}
         />
