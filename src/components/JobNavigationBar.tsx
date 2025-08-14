@@ -12,7 +12,7 @@ export default function JobNavigationBar() {
     <div style={{
       background: 'transparent',
       padding: "0vh 0vh",
-      border: `${(2/776*100).toFixed(3)}vh solid #C0C0C0`,
+      border: "0.258vh solid #C0C0C0",
       zIndex: 1
     }}>
       <JobNavLabels 

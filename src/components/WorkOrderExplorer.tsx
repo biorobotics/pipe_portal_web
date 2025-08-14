@@ -97,7 +97,7 @@ export default function WorkOrderExplorer({
       width: `${(264/1536*100).toFixed(3)}vw`,
       background: '#484848',
       borderLeft: `${(2/1536*100).toFixed(3)}vw solid #7c7c7c`,
-      height: '70vh', // Already vh
+      height: '70vh', 
       display: 'flex',
       flexDirection: 'column'
     }}>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo, useRef, useCallback } from 'react';
 
 interface Observation {
   id: string;
@@ -31,146 +31,184 @@ interface VideoContextType {
   };
   graphData: GraphDataPoint[];
   setCurrentTime: (time: number) => void;
+  setTotalDuration: (duration: number) => void;
   setIsPlaying: (playing: boolean) => void;
   setPlaybackSpeed: (speed: number) => void;
   setHighlightedObservation: (observationId: string | null) => void;
   formatTime: (seconds: number) => string;
+  registerVideoElement: (element: HTMLIFrameElement) => void;
+  unregisterVideoElement: (element: HTMLIFrameElement) => void;
 }
 
 const VideoContext = createContext<VideoContextType | undefined>(undefined);
 
 export function VideoProvider({ children }: { children: ReactNode }) {
   const [currentTime, setCurrentTime] = useState(0);
+  const [totalDuration, setTotalDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [highlightedObservation, setHighlightedObservation] = useState<string | null>(null);
-  
-  const totalDuration = 3752; // 01:02:32 in seconds
+  const [videoElements, setVideoElements] = useState<HTMLIFrameElement[]>([]);
+  const videoElementsRef = useRef<HTMLIFrameElement[]>([]);
+  const lastKnownTime = useRef<number>(0);
 
-  // Generate consistent graph data spanning the full duration
+  // Register/unregister video elements
+  const registerVideoElement = useCallback((element: HTMLIFrameElement) => {
+    if (!videoElementsRef.current.includes(element)) {
+      videoElementsRef.current.push(element);
+      setVideoElements([...videoElementsRef.current]);
+    }
+  }, []);
+
+  const unregisterVideoElement = useCallback((element: HTMLIFrameElement) => {
+    videoElementsRef.current = videoElementsRef.current.filter(iframe => iframe !== element);
+    setVideoElements([...videoElementsRef.current]);
+  }, []);
+
+  // Handle video synchronization
+  useEffect(() => {
+    videoElements.forEach(iframe => {
+      try {
+        // Play/Pause command
+        const playMessage = {
+          event: 'command',
+          func: isPlaying ? 'playVideo' : 'pauseVideo'
+        };
+        iframe.contentWindow?.postMessage(JSON.stringify(playMessage), '*');
+
+        // Seek command (only if time changed significantly)
+        if (Math.abs(currentTime - lastKnownTime.current) > 0.5) {
+          const seekMessage = {
+            event: 'command',
+            func: 'seekTo',
+            args: [currentTime, true]
+          };
+          iframe.contentWindow?.postMessage(JSON.stringify(seekMessage), '*');
+          lastKnownTime.current = currentTime;
+        }
+
+        // Playback speed command
+        const speedMessage = {
+          event: 'command',
+          func: 'setPlaybackRate',
+          args: [playbackSpeed]
+        };
+        iframe.contentWindow?.postMessage(JSON.stringify(speedMessage), '*');
+      } catch (error) {
+        console.error('Error sending message to iframe:', error);
+      }
+    });
+  }, [isPlaying, currentTime, playbackSpeed, videoElements]);
+
+  // Listen for messages from iframes
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (!videoElementsRef.current.some(iframe => event.source === iframe.contentWindow)) {
+        return;
+      }
+
+      try {
+        let data;
+        if (typeof event.data === 'string') {
+          // Skip trying to parse if it starts with '!_'
+          if (event.data.startsWith('!_')) {
+            return;
+          }
+          try {
+            data = JSON.parse(event.data);
+          } catch {
+            // If parsing fails, try to use the data as is
+            data = event.data;
+          }
+        } else {
+          data = event.data;
+        }
+        
+        // Only proceed if we have valid data
+        if (!data || typeof data !== 'object') {
+          return;
+        }
+
+        switch (data.event) {
+          case 'infoDelivery':
+            if (data.info && typeof data.info.currentTime === 'number') {
+              // Only update if it's significantly different
+              if (Math.abs(data.info.currentTime - currentTime) > 0.5) {
+                setCurrentTime(data.info.currentTime);
+              }
+            }
+            if (data.info?.duration !== undefined && totalDuration === 0) {
+              setTotalDuration(data.info.duration);
+            }
+            break;
+          case 'onStateChange':
+            // -1: unstarted, 0: ended, 1: playing, 2: paused, 3: buffering, 5: cued
+            if (data.info === 1 && !isPlaying) {
+              setIsPlaying(true);
+            } else if (data.info === 2 && isPlaying) {
+              setIsPlaying(false);
+            }
+            break;
+        }
+      } catch (error) {
+        console.error('Error handling iframe message:', error);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [currentTime, isPlaying, totalDuration]);
+
+  // Format time helper
+  const formatTime = useCallback((seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }, []);
+
+  // Generate graph data
   const graphData = useMemo(() => {
     const dataPoints: GraphDataPoint[] = [];
     const numPoints = 100;
     
-    // Use a seed for consistent random generation
-    let seed = 12345;
-    const seededRandom = () => {
-      seed = (seed * 9301 + 49297) % 233280;
-      return seed / 233280;
-    };
-    
     for (let i = 0; i < numPoints; i++) {
-      const time = (i / (numPoints - 1)) * totalDuration;
-      
-      // Create a realistic pattern with some noise
-      const progress = time / totalDuration;
-      const baseValue = 4 + Math.sin(progress * Math.PI * 4) * 2;
-      const noise = (seededRandom() - 0.5) * 0.5;
-      const value = Math.max(0, Math.min(8, baseValue + noise));
-      
+      const time = Number(((i / (numPoints - 1)) * totalDuration).toFixed(3));
+      const value = Number((4 + Math.sin((i / (numPoints - 1)) * Math.PI * 4) * 2).toFixed(6));
       dataPoints.push({ time, value });
     }
     
     return dataPoints;
   }, [totalDuration]);
 
-  // Generate time-based data
-  const getCurrentData = (time: number) => {
-    // Simulate data changes over time
-    const progress = time / totalDuration;
-    
-    // Base values that change over time
-    const baseLatitude = 40.7128;
-    const baseLongitude = -74.0060;
-    const baseAltitude = 15.5;
-    const basePipeDiameter = 45.2;
-    
-    // Add some variation based on time
-    const latitudeVariation = Math.sin(progress * Math.PI * 2) * 0.0001;
-    const longitudeVariation = Math.cos(progress * Math.PI * 2) * 0.0001;
-    const altitudeVariation = Math.sin(progress * Math.PI * 4) * 2;
-    const diameterVariation = Math.cos(progress * Math.PI * 3) * 1;
-    
+  // Generate current data
+  const currentData = useMemo(() => {
+    const progress = currentTime / totalDuration;
     return {
-      latitude: baseLatitude + latitudeVariation,
-      longitude: baseLongitude + longitudeVariation,
-      altitude: baseAltitude + altitudeVariation,
-      pipeDiameter: basePipeDiameter + diameterVariation
+      latitude: Number((40.7128 + Math.sin(progress * Math.PI * 2) * 0.0001).toFixed(8)),
+      longitude: Number((-74.0060 + Math.cos(progress * Math.PI * 2) * 0.0001).toFixed(8)),
+      altitude: Number((15.5 + Math.sin(progress * Math.PI * 4) * 0.5).toFixed(6)),
+      pipeDiameter: Number((45.2 + Math.cos(progress * Math.PI * 3) * 0.2).toFixed(6))
     };
-  };
-  
-  // Sample observations data
-  const observations: Observation[] = [
-    {
-      id: 'obs1',
-      time: 900, // 15:00
-      title: 'Structural Damage',
-      subtitle: 'Crack in pipe wall',
-      timestamp: '15:00:00',
-      thumbnailUrl: '/thumbnails/obs1.jpg'
-    },
-    {
-      id: 'obs2',
-      time: 1800, // 30:00
-      title: 'Leak Detection',
-      subtitle: 'Water seepage at 45° bend',
-      timestamp: '30:00:00',
-      thumbnailUrl: '/thumbnails/obs2.jpg'
-    },
-    {
-      id: 'obs3',
-      time: 2700, // 45:00
-      title: 'Pipe Corrosion',
-      subtitle: 'Severe rust detected at joint',
-      timestamp: '45:00:00',
-      thumbnailUrl: '/thumbnails/obs3.jpg'
-    }
-  ];
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  // Auto-play functionality with playback speed
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setCurrentTime(prev => {
-          if (prev >= totalDuration) {
-            setIsPlaying(false);
-            return prev;
-          }
-          return prev + playbackSpeed;
-        });
-      }, 1000);
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [isPlaying, totalDuration, playbackSpeed]);
+  }, [currentTime, totalDuration]);
 
   const value: VideoContextType = {
     currentTime,
     totalDuration,
     isPlaying,
     playbackSpeed,
-    observations,
+    observations: [],  // Add your observations here
     highlightedObservation,
-    currentData: getCurrentData(currentTime),
+    currentData,
     graphData,
     setCurrentTime,
+    setTotalDuration,
     setIsPlaying,
     setPlaybackSpeed,
     setHighlightedObservation,
-    formatTime
+    formatTime,
+    registerVideoElement,
+    unregisterVideoElement
   };
 
   return (
@@ -186,4 +224,4 @@ export function useVideo() {
     throw new Error('useVideo must be used within a VideoProvider');
   }
   return context;
-} 
+}

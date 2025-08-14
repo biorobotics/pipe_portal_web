@@ -14,6 +14,7 @@ import VideoPlayer from "../components/VideoPlayer";
 import ObservationModal from "../components/ObservationModal";
 import { JobNavigationProvider } from "../contexts/JobNavigationContext";
 import { VideoProvider, useVideo } from "../contexts/VideoContext";
+import Video  from 'next-video';
 
 function HomeContent() {
   const { 
@@ -64,16 +65,17 @@ function HomeContent() {
   return (
     <div style={{
       marginLeft: `${(96/1536*100).toFixed(3)}vw`, // Account for the left sidebar
-      minHeight: `calc(100vh - ${(64/776*100).toFixed(3)}vh)`,
+      minHeight: `calc(100vh - ${(64/776*100).toFixed(3)}vh)`, // Conversion from px to vh, in this case we're converting 64px to vh
       background: "#EAEAEA",
       position: "relative"
     }}>
+
       {/* Navigation area with proper spacing */}
       <div style={{
         position: 'absolute',
         display: 'flex',
         alignItems: 'flex-end',
-        gap: `${(8/1536*100).toFixed(3)}vw`
+        gap: `${(8/1536*100).toFixed(3)}vw` // Converting 8px to vw
       }}>
         <BackButton />
         <JobNavigationBar />
@@ -99,11 +101,11 @@ function HomeContent() {
       {/* Entity Buttons Section - below work order explorer */}
       <div style={{
         position: 'absolute',
-        top: `calc(${(40/776*100).toFixed(3)}vh + 70vh)`, // Position below work order explorer
+        top: `calc(${(40/776*100).toFixed(3)}vh + 70vh)`,
         left: '0vw',
-        width: `${(264/1536*100).toFixed(3)}vw`, // Same width as work order explorer
+        width: `${(264/1536*100).toFixed(3)}vw`,
         height: `calc(100vh - ${(64/776*100).toFixed(3)}vh - ${(40/776*100).toFixed(3)}vh - 70vh)`, // Fill remaining viewport height
-        background: '#484848', // Match the new color scheme
+        background: '#484848',
         borderLeft: `${(2/1536*100).toFixed(3)}vw solid #7C7C7C`,
         zIndex: 5
       }}>
@@ -117,12 +119,12 @@ function HomeContent() {
         {/* Entity Buttons */}
         <div style={{
           padding: `${(8/776*100).toFixed(3)}vh 0`,
-          height: `calc(100% - ${(1/776*100).toFixed(3)}vh)`, // Fill remaining height after separator
+          height: `calc(100% - 0.129vh)`, // Fill remaining height after separator
           overflow: 'hidden', // Prevent scrollbar
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          gap: `${(16/1536*100).toFixed(3)}vw` // Add more spacing between buttons
+          gap: `${(16/1536*100).toFixed(3)}vw` 
         }}>
           <EntityButton 
             label="Pipe" 
@@ -153,7 +155,7 @@ function HomeContent() {
           text="Add Observation"
           fontFamily="Roboto Mono, monospace"
           fontWeight="400"
-          onClick={handleAddObservation}
+          onClick={handleAddObservation} // Open flow menu on click
         />
       </div>
       
@@ -201,8 +203,8 @@ function HomeContent() {
           height: `${(334/776*100).toFixed(3)}vh`
         }}>
           <div style={{ flex: 1 }}>
-            <VideoPanel 
-              cameraName="Cam 1"
+            <VideoPanel
+              vidFile="visual_output.mp4" 
               timestamp={formatTime(currentTime)}
               isCircular={false}
               width="100%"
@@ -210,8 +212,8 @@ function HomeContent() {
             />
           </div>
           <div style={{ flex: 1 }}>
-            <VideoPanel 
-              cameraName="Cam 2"
+            <VideoPanel
+              vidFile="laser_output.mp4" 
               timestamp={formatTime(currentTime)}
               isCircular={false}
               width="100%"

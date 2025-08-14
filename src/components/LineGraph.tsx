@@ -23,6 +23,13 @@ export default function LineGraph({
   const [isDragging, setIsDragging] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
 
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
   // Use provided data or fallback to empty array
   const graphData = data.length > 0 ? data : [];
 
@@ -165,14 +172,14 @@ export default function LineGraph({
           color: '#666666',
           fontFamily: 'Roboto Mono, monospace'
         }}>
-          00:00:00
+          {formatTime(0)}
         </div>
         <div style={{
           fontSize: '0.59vw',
           color: '#666666',
           fontFamily: 'Roboto Mono, monospace'
         }}>
-          01:02:48
+          {formatTime(totalDuration)}
         </div>
       </div>
 

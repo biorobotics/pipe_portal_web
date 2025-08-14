@@ -52,7 +52,7 @@ export default function RootLayout({
         style={{ background: "#EAEAEA" }}
       >
         <NavigationProvider>
-          {/* Figma-inspired Header (refined) */}
+          {/* Figma-inspired Header */}
           <header
             style={{
               display: "flex",
@@ -71,7 +71,8 @@ export default function RootLayout({
           >
             {/* Logo */}
             <div style={{ display: "flex", alignItems: "center", position: "absolute", left: 32, top: 0, bottom: 0, height: "100%" }}>
-              <img src="/assets/logo.png" alt="Carnegie Mellon University Logo" style={{ height: 40, width: "auto" }} />
+              {/* <img src="/assets/logo.png" alt="Carnegie Mellon University Logo" style={{ height: 40, width: "auto" }} /> */}
+              <img src="assets/pf-logo.svg" height="43" width="239" />
             </div>
             {/* Breadcrumbs */}
             <nav style={{ flex: 0, textAlign: "center" }}>
@@ -90,8 +91,8 @@ export default function RootLayout({
                   height: `${(36/776*100).toFixed(3)}vh`,
                   borderRadius: "50%",
                   background: "#f3f4f6",
-                  border: `${(1/1536*100).toFixed(3)}vw solid #e5e7eb`,
-                  fontSize: `${(20/1536*100).toFixed(3)}vw`,
+                  border: '0.065vw solid #e5e7eb',
+                  fontSize: '1.302vw',
                   color: "#555",
                 }}
                 title="Profile"
@@ -122,21 +123,21 @@ export default function RootLayout({
             {/* Icons container, fills remaining space */}
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", width: "100%", marginTop: 100 }}>
               {/* Icon 1: Job */}
-              <Tooltip content='See Jobs' position='right'>
+              <Tooltip content='See Jobs' position='top'>
                 <NavIcon 
                   iconName="job" 
                   alt="Jobs"
                 />
               </Tooltip>
               {/* Icon 2: Map */}
-              <Tooltip content='See Map' position='right'>
+              <Tooltip content='See Map' position='top'>
                 <NavIcon 
                   iconName="map" 
                   alt="Map"
                 />
               </Tooltip>
               {/* Icon 3: Bot */}
-              <Tooltip content='See Robot' position='right'>
+              <Tooltip content='See Robot' position='bottom'>
                 <NavIcon 
                   iconName="bot" 
                   alt="Bot"

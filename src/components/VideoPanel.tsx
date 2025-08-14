@@ -1,7 +1,11 @@
 'use client';
 
+import { useEffect, useRef, useMemo } from 'react';
+import { useVideo } from '../contexts/VideoContext';
+
 interface VideoPanelProps {
-  cameraName: string;
+  vidFile: string;
+  vidLink?: string;
   timestamp: string;
   isCircular?: boolean;
   width?: string;
@@ -9,12 +13,41 @@ interface VideoPanelProps {
 }
 
 export default function VideoPanel({ 
-  cameraName, 
+  vidFile,
+  vidLink = (vidFile == 'visual_output.mp4') ? '1PMKplMM89LThYJf9Z_9I1cD070FhxsqX' : '13TeqmmMAbvJ2YCuLBnWaxyVgPXXqF4Tz',
   timestamp, 
   isCircular = false,
   width = '100%',
   height = '100%'
 }: VideoPanelProps) {
+  const { registerVideoElement, unregisterVideoElement, setTotalDuration } = useVideo();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const displayName = useMemo(() => vidFile.split('/').pop()?.split('?')[0] || '', [vidFile]);
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (iframe) {
+      registerVideoElement(iframe);
+      
+      // Listen for messages from the iframe
+      const handleMessage = (event: MessageEvent) => {
+        if (event.source === iframe.contentWindow) {
+          const data = event.data;
+          if (data.type === 'duration') {
+            setTotalDuration(data.value);
+          }
+        }
+      };
+
+      window.addEventListener('message', handleMessage);
+      return () => {
+        unregisterVideoElement(iframe);
+        window.removeEventListener('message', handleMessage);
+      };
+    }
+  }, [registerVideoElement, unregisterVideoElement, setTotalDuration]);
+
+  
   return (
     <div style={{
       position: 'relative',
@@ -27,31 +60,21 @@ export default function VideoPanel({
       alignItems: 'center',
       justifyContent: 'center'
     }}>
-      {/* Video placeholder - using the pipe image */}
-      <div style={{
-        width: '24.93vw',
-        height: '41.24vh',
-        background: `url('/assets/pipe_interior.png')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        {/* Overlay for better text readability */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.3)'
-        }} />
-      </div>
-
+      {/* Video Element */}
+      <iframe 
+        ref={iframeRef}
+        src={`https://drive.google.com/file/d/${vidLink}/preview`}
+        onLoad={(e) => {
+          const iframe = e.currentTarget;
+          if (iframe) {
+            registerVideoElement(iframe);
+          }
+        }}
+        width="100%" 
+        height="100%" 
+        allow="autoplay">  
+      </iframe>
+      
       {/* Camera name overlay */}
       <div style={{
         position: 'absolute',
@@ -66,7 +89,7 @@ export default function VideoPanel({
         borderRadius: '0.26vh',
         zIndex: 10
       }}>
-        {cameraName}
+        {displayName}
       </div>
 
       {/* Timestamp overlay */}

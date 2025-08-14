@@ -26,7 +26,7 @@ export default function BaseMenu({
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-      height: '100%'
+  height: 'fit-content'
     }}>
       {/* Search Bar */}
       <div style={{
@@ -76,7 +76,8 @@ export default function BaseMenu({
       <div style={{
         flex: 1,
         overflow: 'auto',
-        padding: `${(8/776*100).toFixed(3)}vh 0`
+        padding: `${(8/776*100).toFixed(3)}vh 0`,
+        maxHeight: '26vh', // Prevents cutoff and enables scrolling for long lists
       }}>
         {filteredOptions.map((option, index) => (
           <div

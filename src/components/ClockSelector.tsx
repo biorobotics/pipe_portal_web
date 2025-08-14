@@ -123,7 +123,7 @@ export default function ClockSelector({
         width: size,
         height: size,
         borderRadius: '50%',
-        border: `${(12/1536*100).toFixed(3)}vw solid #ff2400`, // Thicker red ring
+        border: '0.781vw solid #ff2400',
         background: '#000000'
       }} />
 
@@ -146,8 +146,8 @@ export default function ClockSelector({
               height: currentRadius * 2,
               borderRadius: '50%',
               background: isSelected ? '#ff2400' : '#ffffff', // Red when selected, white when not
-              border: isSelected ? `${(2/1536*100).toFixed(3)}vw solid #ffffff` : // White outline when selected
-                      isHovered ? `${(1/1536*100).toFixed(3)}vw solid rgba(255, 255, 255, 0.5)` : 'none',
+              border: isSelected ? '0.130vw solid #ffffff' : // White outline when selected
+                      isHovered ? '0.065vw solid rgba(255, 255, 255, 0.5)' : 'none',
               boxShadow: isSelected ? `0 0 ${(4/1536*100).toFixed(3)}vw rgba(255, 255, 255, 0.8)` : 'none',
               transition: 'all 0.2s ease',
               pointerEvents: 'none' // Let the container handle all mouse events

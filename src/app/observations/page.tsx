@@ -26,7 +26,7 @@ function ObservationsPageContent() {
 
   return (
     <div style={{
-      marginLeft: `${(96/1536*100).toFixed(3)}vw`, // Account for the left sidebar
+      marginLeft: '6.250vw', // Account for the left sidebar
       minHeight: `calc(100vh - ${(64/776*100).toFixed(3)}vh)`,
       background: "#EAEAEA",
       position: "relative"
@@ -36,7 +36,7 @@ function ObservationsPageContent() {
         position: 'absolute',
         display: 'flex',
         alignItems: 'flex-end',
-        gap: `${(8/1536*100).toFixed(3)}vw`
+        gap: '0.521vw'
       }}>
         <BackButton />
         <JobNavigationBar />
@@ -64,10 +64,10 @@ function ObservationsPageContent() {
         position: 'absolute',
         top: `calc(${(40/776*100).toFixed(3)}vh + 70vh)`, // Position below work order explorer
         left: 0,
-        width: `${(264/1536*100).toFixed(3)}vw`, // Same width as work order explorer
+        width: '17.188vw', // Same width as work order explorer
         height: `calc(100vh - ${(64/776*100).toFixed(3)}vh - ${(40/776*100).toFixed(3)}vh - 70vh)`, // Fill remaining viewport height
         background: '#484848', // Match the new color scheme
-        borderLeft: `${(2/1536*100).toFixed(3)}vw solid #7C7C7C`,
+        borderLeft: '0.130vw solid #7C7C7C',
         zIndex: 5
       }}>
         {/* Separator line */}
@@ -85,7 +85,7 @@ function ObservationsPageContent() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          gap: `${(16/1536*100).toFixed(3)}vw` // Add more spacing between buttons
+          gap: '1.042vw' // Add more spacing between buttons
         }}>
           <EntityButton 
             label="Pipe" 
@@ -110,7 +110,7 @@ function ObservationsPageContent() {
       <div style={{
         position: 'absolute',
         top: `${(4/776*100).toFixed(3)}vh`,
-        right: `${(8/1536*100).toFixed(3)}vw`
+        right: '0.521vw'
       }}>
         <AddButton 
           text="Add Observation"
@@ -123,11 +123,12 @@ function ObservationsPageContent() {
       <div style={{
         padding: `${(20/776*100).toFixed(3)}vh`,
         paddingTop: `${(40/776*100).toFixed(3)}vh`, // Add top padding to avoid intersection with navigation
-        marginLeft: `${(264/1536*100).toFixed(3)}vw`, // Account for work order explorer width
+        marginLeft: '17.188vw', // Account for work order explorer width
         color: "#242424",
         fontFamily: "var(--font-roboto), Roboto, Arial, sans-serif"
       }}>
         {/* Space reserved for videos and line graph */}
+        
       </div>
     </div>
   );
