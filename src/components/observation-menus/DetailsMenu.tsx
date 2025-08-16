@@ -1,3 +1,9 @@
+/**
+ * @fileoverview DetailsMenu component for entering details about the observations.
+ * Details include remarks about the observation and a clock position selector to indicate the location of the observation
+ * along the pipe's cross-section.
+ */
+
 'use client';
 
 import React, { useState } from 'react';
@@ -11,6 +17,11 @@ interface DetailsMenuProps {
   onCancel: () => void;
 }
 
+/**
+ * DetailsMenu component for entering details about the observations.
+ * @param param0 - The props for the DetailsMenu component.
+ * @returns DetailsMenu component.
+ */
 export default function DetailsMenu({ 
   family, 
   group, 
@@ -18,9 +29,12 @@ export default function DetailsMenu({
   onSubmit, 
   onCancel 
 }: DetailsMenuProps) {
+  // State to manage remark input and clock position
   const [remark, setRemark] = useState('');
   const [clockPosition, setClockPosition] = useState(12); // Default to 12 o'clock
 
+  // Handle submit action
+  // Calls onSubmit with the remark and clock position when the user clicks the submit button
   const handleSubmit = () => {
     onSubmit(remark, clockPosition);
   };
@@ -84,7 +98,7 @@ export default function DetailsMenu({
         />
       </div>
 
-      {/* Action Buttons */}
+      {/* Submit and Cancel buttons */}
       <div style={{
         display: 'flex',
         gap: '1.55vh',

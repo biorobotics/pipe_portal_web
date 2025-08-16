@@ -1,30 +1,60 @@
+/**
+ * @fileoverview EntityButton component for displaying a button with an entity label and ID.
+ * The button can be clicked to navigate to a job's respective Pipe or Robot.
+ * It supports hover effects and can be customized with an onClick handler.
+ * Uses client-side rendering.
+ * @remark The Pipe and Robot pages are not currently implemented.
+ */
+
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+/**
+ * Props for EntityButton component.
+ * @property label - The label for the entity (either 'Pipe' or 'Robot').
+ * @property entityId - The ID of the entity.
+ * @property onClick - Optional callback function to execute when the button is clicked.
+ */
 interface EntityButtonProps {
   label: 'Pipe' | 'Robot';
   entityId: string;
   onClick?: () => void;
 }
 
+/**
+ * EntityButton component for displaying an entity label and ID.
+ * @param param0 - The props for the EntityButton component.
+ * @returns The EntityButton component.
+ * @remark The Pipe and Robot pages are not currently implemented.
+ */
 export default function EntityButton({ label, entityId, onClick }: EntityButtonProps) {
+  // State to manage hover effect
   const [isHovered, setIsHovered] = useState(false);
-  const router = useRouter();
+  const router = useRouter(); // Use Next.js router for navigation to eventual Pipe or Robot pages
 
+  /**
+  * Handle click event to navigate to the respective page or execute onClick callback
+  * If onClick is provided, it will be called when the button is clicked.
+  * Otherwise, it navigates to the Pipe or Robot page based on the label.
+   */
   const handleClick = () => {
     if (onClick) {
       onClick();
     } else {
       // Default navigation behavior
       if (label === 'Pipe') {
-        router.push('/map'); // Navigate to map page with pipe highlighted
+        router.push('/map'); // Navigate to map page with pipe highlighted (map page is not implemented yet)
       } else if (label === 'Robot') {
-        router.push('/bot'); // Navigate to bot page with robot highlighted
+        router.push('/bot'); // Navigate to bot page with robot highlighted (bot page is not implemented yet)
       }
     }
   };
 
+  /**
+   * Get the icon based on the label
+   * @returns The source of the icon based on the label.
+   */
   const getIconSrc = () => {
     return label === 'Pipe' ? '/assets/pipe.svg' : '/assets/bot.svg';
   };
@@ -42,7 +72,7 @@ export default function EntityButton({ label, entityId, onClick }: EntityButtonP
         transition: 'all 0.2s ease-in-out',
         border: 'none',
         minHeight: `${(32/776*100).toFixed(3)}vh`,
-        boxSizing: 'border-box' as const,
+        boxSizing: 'border-box',
         marginLeft: `${(8/1536*100).toFixed(3)}vw`,
         marginRight: `${(8/1536*100).toFixed(3)}vw`
       }}
@@ -67,15 +97,16 @@ export default function EntityButton({ label, entityId, onClick }: EntityButtonP
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: `${(4/1536*100).toFixed(3)}vw`
+        gap: `${(1/1536*100).toFixed(3)}vw`
       }}>
+        {/* There are actually 2 icons: a right arrow, followed by a pipe or robot icon */}
         <img
           src="/assets/arrow.svg"
           alt="Arrow"
           style={{
             width: `${(16/1536*100).toFixed(3)}vw`,
             height: `${(16/776*100).toFixed(3)}vh`,
-            filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' // Make arrow white
+            filter: 'invert(100%)' // Make arrow white
           }}
         />
         <img
@@ -84,7 +115,7 @@ export default function EntityButton({ label, entityId, onClick }: EntityButtonP
           style={{
             width: `${(16/1536*100).toFixed(3)}vw`,
             height: `${(16/776*100).toFixed(3)}vh`,
-            filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)' // Make icon white
+            filter: 'invert(100%)' // Make icon white
           }}
         />
       </div>

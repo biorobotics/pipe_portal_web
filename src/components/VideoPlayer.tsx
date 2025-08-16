@@ -1,14 +1,36 @@
+/**
+ * @fileoverview VideoPlayer component for interactive video playback with timeline, controls, and observation markers.
+ * Controls include play/pause, rewind, fast forward, and playback speed selection.
+ * Integrates with VideoContext for playback state and speed. Used to control and visualize video progress in the portal UI.
+ * Uses client-side rendering.
+ */
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
 import { useVideo } from '../contexts/VideoContext';
 
+
+/**
+ * Observation data structure for timeline markers.
+ * @property id - Unique identifier for the observation.
+ * @property time - Time (in seconds) of the observation in the video.
+ * @property title - Title of the observation.
+ */
 interface Observation {
   id: string;
   time: number;
   title: string;
 }
 
+
+/**
+ * Props for the VideoPlayer component.
+ * @property currentTime - The current playback time in seconds.
+ * @property totalDuration - The total duration of the video in seconds.
+ * @property observations - Array of observations to mark on the timeline.
+ * @property onTimeChange - Callback when the playback time changes.
+ * @property onObservationClick - Callback when an observation marker is clicked.
+ */
 interface VideoPlayerProps {
   currentTime: number;
   totalDuration: number;
@@ -17,6 +39,17 @@ interface VideoPlayerProps {
   onObservationClick: (observationId: string) => void;
 }
 
+/**
+ * VideoPlayer component for interactive video playback with timeline, controls, and observation markers.
+ * Integrates with VideoContext for playback state and speed.
+ *
+ * @param currentTime - The current playback time in seconds.
+ * @param totalDuration - The total duration of the video in seconds.
+ * @param observations - Array of observations to mark on the timeline.
+ * @param onTimeChange - Callback when the playback time changes.
+ * @param onObservationClick - Callback when an observation marker is clicked.
+ * @returns The video player UI with timeline and controls.
+ */
 export default function VideoPlayer({ 
   currentTime, 
   totalDuration, 
@@ -31,14 +64,25 @@ export default function VideoPlayer({
 
   const speedOptions = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
-  const formatTime = (seconds: number) => {
+
+  /**
+   * Formats a time value in seconds as HH:MM:SS.
+   * @param seconds - Time in seconds.
+   * @returns Formatted time string.
+   */
+  const formatTime = (seconds: number): string => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleTimelineClick = (event: React.MouseEvent<HTMLDivElement>) => {
+
+  /**
+   * Handles click on the timeline to seek to a new time.
+   * @param event - Mouse event from the timeline div.
+   */
+  const handleTimelineClick = (event: React.MouseEvent<HTMLDivElement>): void => {
     if (!isDragging) {
       const rect = event.currentTarget.getBoundingClientRect();
       const clickX = event.clientX - rect.left;
@@ -48,13 +92,23 @@ export default function VideoPlayer({
     }
   };
 
-  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+
+  /**
+   * Handles mouse down event to start dragging the timeline.
+   * @param event - Mouse event from the timeline div.
+   */
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>): void => {
     setIsDragging(true);
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
 
-  const handleMouseMove = (event: MouseEvent) => {
+
+  /**
+   * Handles mouse move event to update the timeline while dragging.
+   * @param event - Mouse event from the document.
+   */
+  const handleMouseMove = (event: MouseEvent): void => {
     if (isDragging && timelineRef.current) {
       const rect = timelineRef.current.getBoundingClientRect();
       const clickX = event.clientX - rect.left;
@@ -64,12 +118,20 @@ export default function VideoPlayer({
     }
   };
 
-  const handleMouseUp = () => {
+
+  /**
+   * Handles mouse up event to stop dragging the timeline.
+   */
+  const handleMouseUp = (): void => {
     setIsDragging(false);
     document.removeEventListener('mousemove', handleMouseMove);
     document.removeEventListener('mouseup', handleMouseUp);
   };
 
+
+  /**
+   * Cleans up mouse event listeners on unmount or when dragging state changes.
+   */
   useEffect(() => {
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
@@ -77,21 +139,38 @@ export default function VideoPlayer({
     };
   }, [isDragging]);
 
-  const handleRewind = () => {
+
+  /**
+   * Handles rewind button click to go back 10 seconds.
+   */
+  const handleRewind = (): void => {
     const newTime = Math.max(0, currentTime - 10);
     onTimeChange(newTime);
   };
 
-  const handleFastForward = () => {
+
+  /**
+   * Handles fast forward button click to go forward 10 seconds.
+   */
+  const handleFastForward = (): void => {
     const newTime = Math.min(totalDuration, currentTime + 10);
     onTimeChange(newTime);
   };
 
-  const handlePlayPause = () => {
+
+  /**
+   * Handles play/pause button click to toggle playback state.
+   */
+  const handlePlayPause = (): void => {
     setIsPlaying(!isPlaying);
   };
 
-  const handleSpeedChange = (speed: number) => {
+
+  /**
+   * Handles playback speed change from the speed menu.
+   * @param speed - The new playback speed to set.
+   */
+  const handleSpeedChange = (speed: number): void => {
     setPlaybackSpeed(speed);
     setShowSpeedMenu(false);
   };

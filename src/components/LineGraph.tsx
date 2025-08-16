@@ -1,7 +1,23 @@
+/**
+ * @fileoverview LineGraph component for rendering an interactive SVG line graph with draggable time indicator.
+ * Supports custom data, time seeking, and displays axes and grid lines.
+ * Uses client-side rendering.
+ * It's used to visualize time-series data with an interactive time indicator.
+ * The time indicator can be dragged to seek different time points, triggering a callback if provided.
+ */
 'use client';
 
 import React, { useState, useRef } from 'react';
 
+
+/**
+ * Props for the LineGraph component.
+ * @property data - Array of data points with time and value.
+ * @property currentTime - The current time position for the indicator.
+ * @property totalDuration - The total duration of the graph (x-axis max).
+ * @property title - Optional title for the graph.
+ * @property onTimeChange - Optional callback for when the time indicator is moved.
+ */
 interface LineGraphProps {
   data: Array<{ time: number; value: number }>;
   currentTime: number;
@@ -10,19 +26,44 @@ interface LineGraphProps {
   onTimeChange?: (time: number) => void;
 }
 
-export default function LineGraph({ 
+/**
+ * The LineGraph component to display time-series data within a job.
+ * @param param0 - The props for the LineGraph component.
+ * @returns The LineGraph component.
+ */
+export default function LineGraph({
   data, 
   currentTime, 
   totalDuration, 
   title = "Title",
   onTimeChange 
 }: LineGraphProps) {
+  /**
+   * Width of the SVG graph in pixels.
+   */
   const width = 800;
+  /**
+   * Height of the SVG graph in pixels.
+   */
   const height = 140;
+  /**
+   * Padding around the graph for axes and labels.
+   */
   const padding = 16;
+  /**
+   * Whether the time indicator is currently being dragged.
+   */
   const [isDragging, setIsDragging] = useState(false);
+  /**
+   * Ref to the SVG element for coordinate calculations.
+   */
   const svgRef = useRef<SVGSVGElement>(null);
 
+  /**
+   * Formats a time value in seconds as HH:MM:SS.
+   * @param seconds - Time in seconds.
+   * @returns Formatted time string.
+   */
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -39,71 +80,89 @@ export default function LineGraph({
   const maxValue = values.length > 0 ? Math.max(...values) : 8;
   const valueRange = maxValue - minValue || 1;
 
-  // Convert data points to SVG coordinates
+
+  /**
+   * Converts data points to SVG coordinates string.
+   */
   const points = graphData.map((point, index) => {
     const x = padding + (point.time / totalDuration) * (width - 2 * padding);
     const y = height - padding - ((point.value - minValue) / valueRange) * (height - 2 * padding);
     return `${x},${y}`;
   }).join(' ');
 
-  // Create path for the line
+  /**
+   * SVG path data for the line graph.
+   */
   const pathData = points.split(' ').map((point, index) => {
     const [x, y] = point.split(',').map(Number);
     return index === 0 ? `M ${x} ${y}` : `L ${x} ${y}`;
   }).join(' ');
 
-  // Current time indicator
+  /**
+   * X coordinate for the current time indicator.
+   */
   const currentTimeX = padding + (currentTime / totalDuration) * (width - 2 * padding);
 
-  // Handle click on graph to seek to time
+
+  /**
+   * Handles click on the graph to seek to a specific time.
+   * @param event - Mouse event from SVG.
+   */
   const handleGraphClick = (event: React.MouseEvent<SVGSVGElement>) => {
     if (!onTimeChange || isDragging) return;
-    
     const rect = event.currentTarget.getBoundingClientRect();
     const clickX = event.clientX - rect.left - padding;
     const graphWidth = width - 2 * padding;
-    
     // Calculate time based on click position
     const clickedTime = (clickX / graphWidth) * totalDuration;
     const clampedTime = Math.max(0, Math.min(totalDuration, clickedTime));
-    
     onTimeChange(clampedTime);
   };
 
-  // Handle drag start
+  /**
+   * Handles drag start for the time indicator.
+   * @param event - Mouse event.
+   */
   const handleDragStart = (event: React.MouseEvent) => {
     event.stopPropagation();
     setIsDragging(true);
   };
 
-  // Handle drag
+  /**
+   * Handles dragging of the time indicator.
+   * @param event - Mouse event.
+   */
   const handleDrag = (event: React.MouseEvent) => {
     if (!isDragging || !onTimeChange || !svgRef.current) return;
-    
     const rect = svgRef.current.getBoundingClientRect();
     const dragX = event.clientX - rect.left - padding;
     const graphWidth = width - 2 * padding;
-    
     // Calculate time based on drag position
     const draggedTime = (dragX / graphWidth) * totalDuration;
     const clampedTime = Math.max(0, Math.min(totalDuration, draggedTime));
-    
     onTimeChange(clampedTime);
   };
 
-  // Handle drag end
+  /**
+   * Handles drag end for the time indicator.
+   */
   const handleDragEnd = () => {
     setIsDragging(false);
   };
 
-  // Handle mouse move for dragging
+  /**
+   * Handles mouse move for dragging the time indicator.
+   * @param event - Mouse event.
+   */
   const handleMouseMove = (event: React.MouseEvent) => {
     if (isDragging) {
       handleDrag(event);
     }
   };
 
-  // Handle mouse up for drag end
+  /**
+   * Handles mouse up for drag end.
+   */
   const handleMouseUp = () => {
     if (isDragging) {
       handleDragEnd();

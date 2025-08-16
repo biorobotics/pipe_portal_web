@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Main content of the home page.
+ * Contains navigation, work order explorer, entity buttons, data section, observations gallery, video monitoring, and video player.
+ * Uses JobNavigationContext for managing job selection and VideoContext for video playback.
+ * Provides a comprehensive overview of job-related data and observations.
+ */
+
 'use client';
 
 import { useState } from "react";
@@ -16,6 +23,10 @@ import { JobNavigationProvider } from "../contexts/JobNavigationContext";
 import { VideoProvider, useVideo } from "../contexts/VideoContext";
 import Video  from 'next-video';
 
+/** 
+ * Main content of the home page, which is currently the job data page.
+ * @returns - The main content of the home page
+ */
 function HomeContent() {
   const { 
     currentTime, 
@@ -29,7 +40,7 @@ function HomeContent() {
     formatTime 
   } = useVideo();
 
-  const [isObservationModalOpen, setIsObservationModalOpen] = useState(false);
+  const [isObservationModalOpen, setIsObservationModalOpen] = useState(false); // Modal state for adding new observations
 
   // Convert observations to the format expected by ObservationsGallery
   const sampleObservations = observations.map(obs => ({
@@ -40,10 +51,20 @@ function HomeContent() {
     thumbnailUrl: obs.thumbnailUrl
   }));
 
+  /**
+   * Update the current time.
+   * @param time - The time to set as the current time in the video player
+   * @returns - Function to handle time change in the video player
+   */
   const handleTimeChange = (time: number) => {
     setCurrentTime(time);
   };
 
+  /**
+   * Sets current time to the time of the clicked observation and highlights it in the gallery.
+   * @param observationId - The ID of the observation to highlight
+   * @returns - Function to handle observation click in the gallery
+   */
   const handleObservationClick = (observationId: string) => {
     const observation = observations.find(obs => obs.id === observationId);
     if (observation) {
@@ -52,10 +73,22 @@ function HomeContent() {
     }
   };
 
+  /**
+   * Handles adding a new observation when the Add Observation button is clicked.
+   * Opens the observation modal for user input.
+   * @returns - Function to handle adding a new observation
+   */
   const handleAddObservation = () => {
     setIsObservationModalOpen(true);
   };
 
+  /**
+   * Saves and stores a new observation. Called when the user submits the observation modal.
+   * Logs the observation data to the console for now.
+   * In the future, this would save the observation to a database, likely in AWS
+   * @param observationData - The data of the new observation to be added
+   * @returns - Function to handle submission of a new observation
+   */
   const handleObservationSubmit = (observationData: any) => {
     console.log('New observation:', observationData);
     // Here you would typically save the observation to your data store
@@ -206,7 +239,6 @@ function HomeContent() {
             <VideoPanel
               vidFile="visual_output.mp4" 
               timestamp={formatTime(currentTime)}
-              isCircular={false}
               width="100%"
               height="100%"
             />
@@ -215,7 +247,6 @@ function HomeContent() {
             <VideoPanel
               vidFile="laser_output.mp4" 
               timestamp={formatTime(currentTime)}
-              isCircular={false}
               width="100%"
               height="100%"
             />
@@ -235,19 +266,6 @@ function HomeContent() {
             onTimeChange={handleTimeChange}
           />
         </div>
-
-        {/* Bottom row - 360 Camera
-        <div style={{
-          height: '20.62vh'
-        }}>
-          <VideoPanel 
-            cameraName="360 Camera"
-            timestamp={formatTime(currentTime)}
-            isCircular={false}
-            width="100%"
-            height="100%"
-          />
-        </div> */}
       </div>
 
       {/* Video Player - at the bottom */}
@@ -277,6 +295,10 @@ function HomeContent() {
   );
 }
 
+/**
+ * @returns - The current home page, which is the job data page for now 
+ * @remark - In the final version, the home page should be the all jobs page
+ */
 export default function Home() {
   return (
     <JobNavigationProvider>

@@ -1,28 +1,52 @@
+/**
+ * @fileoverview ClockSelector component for selecting an hour on a clock face to indicate an observation's location
+ * along the pipe's cross-section.
+ * The clock face is interactive, allowing users to drag to select an hour or click to select a specific hour. The
+ * selected hour is highlighted. The component selects the 12 position as the default.
+ * Uses client-side rendering.
+ */
+
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 
+/**
+ * Props for ClockSelector component.
+ * @property selectedHour - The currently selected hour (1-12).
+ * @property onHourChange - Callback function to execute when the hour is changed.
+ * @property size - Optional size of the clock face in pixels.
+ */
 interface ClockSelectorProps {
   selectedHour: number;
   onHourChange: (hour: number) => void;
   size?: number;
 }
 
+/**
+ * ClockSelector component for selecting an hour on a clock face.
+ * @param param0 - The props for the ClockSelector component.
+ * @returns ClockSelector component.
+ */
 export default function ClockSelector({ 
   selectedHour, 
   onHourChange, 
   size = 150 
 }: ClockSelectorProps) {
+  // State to manage dragging and hover effects
   const [isDragging, setIsDragging] = useState(false);
   const [hoveredHour, setHoveredHour] = useState<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null); // Reference to the clock container
 
-  const center = size / 2;
-  const ringRadius = (size / 2) - 8; // Position dots on the ring itself
-  const dotRadius = 6;
-  const selectedDotRadius = 10;
+  const center = size / 2; // Center of the clock
+  const ringRadius = (size / 2) - 8; // Position dots along the edge of the clock
+  const dotRadius = 6;  // Radius for unselected dots
+  const selectedDotRadius = 10; // Radius for selected dot
 
-  // Calculate position for each hour dot
+  /**
+   * Calculate the x and y coordinates for the dot position based on the hour.
+   * @param hour - The hour to calculate the dot position for.
+   * @returns The x and y coordinates for the dot position based on the hour.
+   */
   const getDotPosition = (hour: number) => {
     // Convert hour to angle (12 o'clock is 0 degrees, 3 o'clock is 90 degrees)
     const angle = ((hour - 12) * 30) * (Math.PI / 180);
@@ -31,7 +55,12 @@ export default function ClockSelector({
     return { x, y };
   };
 
-  // Calculate which hour a position corresponds to
+  /**
+   * Get the hour from the coordinates
+   * @param clientX - The x coordinate of the mouse event.
+   * @param clientY - The y coordinate of the mouse event.
+   * @returns The hour corresponding to the coordinates on the clock face.
+   */
   const getHourFromPosition = (clientX: number, clientY: number) => {
     if (!containerRef.current) return selectedHour;
 
@@ -51,6 +80,7 @@ export default function ClockSelector({
     return hour === 0 ? 12 : hour;
   };
 
+  // Handle various mouse events
   const handleMouseDown = (event: React.MouseEvent) => {
     setIsDragging(true);
     const hour = getHourFromPosition(event.clientX, event.clientY);
@@ -76,29 +106,6 @@ export default function ClockSelector({
     setIsDragging(false);
     setHoveredHour(null);
   };
-
-  useEffect(() => {
-    const handleGlobalMouseMove = (event: MouseEvent) => {
-      if (isDragging) {
-        const hour = getHourFromPosition(event.clientX, event.clientY);
-        onHourChange(hour);
-      }
-    };
-
-    const handleGlobalMouseUp = () => {
-      setIsDragging(false);
-    };
-
-    if (isDragging) {
-      document.addEventListener('mousemove', handleGlobalMouseMove);
-      document.addEventListener('mouseup', handleGlobalMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener('mousemove', handleGlobalMouseMove);
-      document.removeEventListener('mouseup', handleGlobalMouseUp);
-    };
-  }, [isDragging]);
 
   return (
     <div
@@ -156,7 +163,7 @@ export default function ClockSelector({
         );
       })}
 
-      {/* Center number */}
+      {/* Center number indicating the selected hour position */}
       <div style={{
         position: 'absolute',
         top: '50%',

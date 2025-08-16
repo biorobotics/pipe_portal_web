@@ -1,8 +1,21 @@
+/**
+ * @fileoverview ObservationsGallery component displays a scrollable list of observation cards with thumbnails and info.
+ * Each card can be clicked to trigger a callback that changes the current time to the timestamp of the observation, or navigate 
+ * to a map view, and a 'View All' button navigates to the full observations page.
+ */
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+
+/**
+ * Observation data structure for gallery items.
+ * @property id - Unique identifier for the observation.
+ * @property title - Title of the observation.
+ * @property subtitle - Subtitle or description.
+ * @property timestamp - Timestamp string for the observation.
+ * @property thumbnailUrl - URL for the observation's thumbnail image.
+ */
 interface Observation {
   id: string;
   title: string;
@@ -11,22 +24,45 @@ interface Observation {
   thumbnailUrl: string;
 }
 
+
+/**
+ * Props for the ObservationsGallery component.
+ * @property observations - Array of observations to display.
+ * @property highlightedObservation - Optional ID of the currently highlighted observation.
+ * @property onObservationClick - Optional callback when an observation is clicked.
+ */
 interface ObservationsGalleryProps {
   observations: Observation[];
   highlightedObservation?: string | null;
   onObservationClick?: (observationId: string) => void;
 }
 
+
+/**
+ * ObservationsGallery component displays a scrollable list of observation cards with thumbnails and info.
+ * Each card can be clicked to trigger a callback or navigate to a map view, and a 'View All' button navigates to the full observations page.
+ * @param observations - Array of observations to display.
+ * @param highlightedObservation - Optional ID of the currently highlighted observation.
+ * @param onObservationClick - Optional callback when an observation is clicked.
+ * @return ObservationsGallery component.
+ */
 export default function ObservationsGallery({ observations, highlightedObservation, onObservationClick }: ObservationsGalleryProps) {
   const router = useRouter();
 
-  const handleObservationClick = (observationId: string) => {
-    // Navigate to map page with observation highlighted
+  /**
+   * Handles clicking the map icon button for an observation.
+   * Navigates to the map page with the observation highlighted.
+   * @param observationId - The ID of the observation to highlight on the map.
+   */
+  const handleObservationClick = (observationId: string): void => {
     router.push(`/map?observation=${observationId}`);
   };
 
-  const handleViewAllClick = () => {
-    // Navigate to observations page
+  /**
+   * Handles clicking the 'View All' button.
+   * Navigates to the full observations page.
+   */
+  const handleViewAllClick = (): void => {
     router.push('/observations');
   };
 

@@ -1,7 +1,20 @@
+/**
+ * @fileoverview VideoContext provides context and hooks for managing video playback, timeline, and related data.
+ * Use VideoProvider to wrap components and useVideo to access or update video state, playback, and timeline data.
+ */
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo, useRef, useCallback } from 'react';
 
+/**
+ * Observation data structure for video timeline and gallery.
+ * @property id - Unique identifier for the observation.
+ * @property time - Time (in seconds) of the observation in the video.
+ * @property title - Title of the observation.
+ * @property subtitle - Subtitle or description.
+ * @property timestamp - Timestamp string for the observation.
+ * @property thumbnailUrl - URL for the observation's thumbnail image.
+ */
 interface Observation {
   id: string;
   time: number;
@@ -11,11 +24,35 @@ interface Observation {
   thumbnailUrl: string;
 }
 
+/**
+ * Data point for the video graph.
+ * @property time - Time (in seconds) for the data point.
+ * @property value - Value for the data point.
+ */
 interface GraphDataPoint {
   time: number;
   value: number;
 }
 
+/**
+ * Type for the video context value.
+ * @property currentTime - The current playback time in seconds.
+ * @property totalDuration - The total duration of the video in seconds.
+ * @property isPlaying - Whether the video is currently playing.
+ * @property playbackSpeed - The current playback speed.
+ * @property observations - Array of observations for the video.
+ * @property highlightedObservation - The currently highlighted observation ID.
+ * @property currentData - Current data for the video (location, altitude, etc).
+ * @property graphData - Array of data points for the video graph.
+ * @property setCurrentTime - Function to set the current playback time.
+ * @property setTotalDuration - Function to set the total duration.
+ * @property setIsPlaying - Function to set the playing state.
+ * @property setPlaybackSpeed - Function to set the playback speed.
+ * @property setHighlightedObservation - Function to set the highlighted observation.
+ * @property formatTime - Function to format seconds as HH:MM:SS.
+ * @property registerVideoElement - Function to register an iframe video element.
+ * @property unregisterVideoElement - Function to unregister an iframe video element.
+ */
 interface VideoContextType {
   currentTime: number;
   totalDuration: number;
@@ -40,8 +77,17 @@ interface VideoContextType {
   unregisterVideoElement: (element: HTMLIFrameElement) => void;
 }
 
+/**
+ * React context for video playback and timeline state.
+ */
 const VideoContext = createContext<VideoContextType | undefined>(undefined);
 
+/**
+ * Provider component for VideoContext.
+ * Wrap your component tree with this to provide video playback and timeline state.
+ * @param children - The child components to wrap with the provider.
+ * @returns The provider with video context.
+ */
 export function VideoProvider({ children }: { children: ReactNode }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
@@ -52,7 +98,10 @@ export function VideoProvider({ children }: { children: ReactNode }) {
   const videoElementsRef = useRef<HTMLIFrameElement[]>([]);
   const lastKnownTime = useRef<number>(0);
 
-  // Register/unregister video elements
+  /**
+   * Registers an iframe video element for playback control and synchronization.
+   * @param element - The iframe element to register.
+   */
   const registerVideoElement = useCallback((element: HTMLIFrameElement) => {
     if (!videoElementsRef.current.includes(element)) {
       videoElementsRef.current.push(element);
@@ -60,6 +109,10 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  /**
+   * Unregisters an iframe video element.
+   * @param element - The iframe element to unregister.
+   */
   const unregisterVideoElement = useCallback((element: HTMLIFrameElement) => {
     videoElementsRef.current = videoElementsRef.current.filter(iframe => iframe !== element);
     setVideoElements([...videoElementsRef.current]);
@@ -159,8 +212,13 @@ export function VideoProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('message', handleMessage);
   }, [currentTime, isPlaying, totalDuration]);
 
-  // Format time helper
-  const formatTime = useCallback((seconds: number) => {
+
+  /**
+   * Formats a time value in seconds as HH:MM:SS.
+   * @param seconds - Time in seconds.
+   * @returns Formatted time string.
+   */
+  const formatTime = useCallback((seconds: number): string => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
@@ -218,6 +276,11 @@ export function VideoProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Custom hook to access the video context.
+ * Throws an error if used outside a VideoProvider.
+ * @returns The video context value.
+ */
 export function useVideo() {
   const context = useContext(VideoContext);
   if (context === undefined) {

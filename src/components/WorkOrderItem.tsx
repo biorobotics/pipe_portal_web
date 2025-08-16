@@ -1,7 +1,20 @@
+/**
+ * @fileoverview WorkOrderItem component for displaying a work order row with expand/collapse functionality and children (jobs).
+ * Used in WorkOrderExplorer to show expandable/collapsible work order folders.
+ * Uses client-side rendering.
+ */
 'use client';
 
 import { useState } from 'react';
 
+
+/**
+ * Props for the WorkOrderItem component.
+ * @property name - The name of the work order.
+ * @property children - Optional child nodes (jobs) to display when expanded.
+ * @property isExpanded - Whether the work order is expanded (controlled mode).
+ * @property onToggle - Optional callback when the expand/collapse state changes.
+ */
 interface WorkOrderItemProps {
   name: string;
   children?: React.ReactNode;
@@ -9,6 +22,12 @@ interface WorkOrderItemProps {
   onToggle?: (expanded: boolean) => void;
 }
 
+/**
+ * WorkOrderItem component for displaying a work order row with expand/collapse and children (jobs).
+ * Used in WorkOrderExplorer to show expandable/collapsible work order folders.
+ * @param param0 - The props for the WorkOrderItem component.
+ * @returns The work order item row with expand/collapse and children.
+ */
 export default function WorkOrderItem({ 
   name, 
   children, 
@@ -21,7 +40,11 @@ export default function WorkOrderItem({
   // Use external expanded state if provided, otherwise use internal state
   const expanded = onToggle !== undefined ? isExpanded : internalExpanded;
 
-  const handleToggle = () => {
+
+  /**
+   * Handles toggling the expanded/collapsed state of the work order.
+   */
+  const handleToggle = (): void => {
     const newExpanded = !expanded;
     if (onToggle) {
       onToggle(newExpanded);

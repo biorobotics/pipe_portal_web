@@ -1,7 +1,18 @@
+/**
+ * @fileoverview Base interface to be implemented by the add annotation menus
+ */
+
 'use client';
 
 import React, { useState } from 'react';
 
+/**
+ * Properties for BaseMenu component.
+ * @property title - The title of the menu.
+ * @property options - The list of options to display in the menu.
+ * @property onSelect - Callback for when an option is selected.
+ * @property searchPlaceholder - Placeholder text for the search input.
+ */
 interface BaseMenuProps {
   title: string;
   options: Array<{ name: string; code?: string }>;
@@ -9,15 +20,22 @@ interface BaseMenuProps {
   searchPlaceholder?: string;
 }
 
+/**
+ * BaseMenu component for displaying a list of options with search functionality.
+ * @param param0 - The properties for the BaseMenu component.
+ * @returns BaseMenu component.
+ */
 export default function BaseMenu({ 
   title, 
   options, 
   onSelect, 
   searchPlaceholder = "Search" 
 }: BaseMenuProps) {
+  // State to manage search terms and hovered index
   const [searchTerm, setSearchTerm] = useState('');
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  // Filter options based on search term
   const filteredOptions = options.filter(option =>
     option.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -26,7 +44,7 @@ export default function BaseMenu({
     <div style={{
       display: 'flex',
       flexDirection: 'column',
-  height: 'fit-content'
+      height: 'fit-content'
     }}>
       {/* Search Bar */}
       <div style={{

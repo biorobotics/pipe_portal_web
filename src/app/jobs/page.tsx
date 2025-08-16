@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Placeholder page for the jobs list.
+ * @remark This page will be populated with job listings in the future.
+ */
+
+/**
+ * @returns - A placeholder page for the jobs list
+ */
 export default function JobsPage() {
   return (
     <div style={{ 

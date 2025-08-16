@@ -1,7 +1,23 @@
+/**
+ * @fileoverview Tooltip component for displaying contextual information on hover.
+ * Wraps any element and shows a styled tooltip in a configurable position after a delay.
+ * Used to provide additional information or hints in the UI.
+ * @remark Currently, only the left navigation bar uses this component.
+ * Uses client-side rendering.
+ */
+
 'use client';
 
 import React, { useState } from 'react';
 
+
+/**
+ * Props for the Tooltip component.
+ * @property children - The element(s) that trigger the tooltip on hover.
+ * @property content - The text content to display inside the tooltip.
+ * @property position - The position of the tooltip relative to the children (default: 'top').
+ * @property delay - Delay in milliseconds before showing the tooltip (default: 500).
+ */
 interface TooltipProps {
   children: React.ReactNode;
   content: string;
@@ -9,15 +25,34 @@ interface TooltipProps {
   delay?: number;
 }
 
+
+/**
+ * Tooltip component for displaying contextual information on hover.
+ * Wraps any element and shows a styled tooltip in a configurable position after a delay.
+ * @param children - The element(s) that trigger the tooltip on hover.
+ * @param content - The text content to display inside the tooltip.
+ * @param position - The position of the tooltip relative to the children (default: 'top').
+ * @param delay - Delay in milliseconds before showing the tooltip (default: 500).
+ * @returns The wrapped children with tooltip functionality.
+ */
 export default function Tooltip({ 
   children, 
   content, 
   position = 'top',
   delay = 500 
 }: TooltipProps) {
+  /**
+   * Whether the tooltip is currently visible.
+   */
   const [isVisible, setIsVisible] = useState(false);
+  /**
+   * Timeout ID for delayed tooltip display.
+   */
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
+  /**
+   * Handles mouse enter event to show the tooltip after a delay.
+   */
   const handleMouseEnter = () => {
     if (timeoutId) {
       clearTimeout(timeoutId);
@@ -26,6 +61,9 @@ export default function Tooltip({
     setTimeoutId(id);
   };
 
+  /**
+   * Handles mouse leave event to hide the tooltip and clear any pending timeout.
+   */
   const handleMouseLeave = () => {
     if (timeoutId) {
       clearTimeout(timeoutId);
@@ -33,6 +71,10 @@ export default function Tooltip({
     setIsVisible(false);
   };
 
+  /**
+   * Returns the style object for the tooltip based on its position and visibility.
+   * @returns The style object for the tooltip.
+   */
   const getPositionStyles = () => {
     const baseStyles = {
       position: 'absolute' as const,
@@ -100,4 +142,4 @@ export default function Tooltip({
       </div>
     </div>
   );
-} 
+}

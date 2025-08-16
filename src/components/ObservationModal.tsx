@@ -1,3 +1,8 @@
+/**
+ * @fileoverview ObservationModal component for creating and submitting a new observation.
+ * Provides a multi-stage modal with draggable UI and breadcrumbs for navigation.
+ * Uses client-side rendering.
+ */
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -6,6 +11,16 @@ import GroupMenu from './observation-menus/GroupMenu';
 import DescriptorMenu from './observation-menus/DescriptorMenu';
 import DetailsMenu from './observation-menus/DetailsMenu';
 
+
+/**
+ * Data structure for an observation.
+ * @property family - The selected family.
+ * @property group - The selected group.
+ * @property descriptor - The selected descriptor.
+ * @property code - The PACP code for the descriptor.
+ * @property remark - User remark for the observation.
+ * @property clockPosition - Clock position for the observation.
+ */
 interface ObservationData {
   family: string;
   group: string;
@@ -15,20 +30,47 @@ interface ObservationData {
   clockPosition: number;
 }
 
+
+/**
+ * Props for the ObservationModal component.
+ * @property isOpen - Whether the modal is open.
+ * @property onClose - Callback to close the modal.
+ * @property onSubmit - Callback to submit the observation data.
+ */
 interface ObservationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (observation: ObservationData) => void;
 }
 
+
+/**
+ * Stages of the modal menu.
+ */
 type MenuStage = 'family' | 'group' | 'descriptor' | 'details';
 
+
+/**
+ * ObservationModal component for creating and submitting a new observation.
+ * Provides a multi-stage modal with draggable UI and breadcrumbs for navigation.
+ * Users first select a family, then a group, then a descriptor, and lastly enter remarks and the 
+ * observation's clock position.
+ *
+ * @param param0 - The props for the ObservationModal component.
+ * @returns The ObservationModal component.
+ */
 export default function ObservationModal({ 
   isOpen, 
   onClose, 
   onSubmit 
 }: ObservationModalProps) {
+  /**
+   * Current stage of the modal menu.
+   */
   const [currentStage, setCurrentStage] = useState<MenuStage>('family');
+  /**
+   * Observation data being constructed.
+   */
   const [observationData, setObservationData] = useState<ObservationData>({
     family: '',
     group: '',
@@ -37,9 +79,21 @@ export default function ObservationModal({
     remark: '',
     clockPosition: 12
   });
+  /**
+   * Whether the modal is currently being dragged.
+   */
   const [isDragging, setIsDragging] = useState(false);
+  /**
+   * Offset of the mouse from the modal's top-left during drag.
+   */
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  /**
+   * Current position of the modal on the screen.
+   */
   const [modalPosition, setModalPosition] = useState({ x: 116, y: 50 }); // Initial position
+  /**
+   * Ref to the modal div for drag calculations.
+   */
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Reset modal when opened
@@ -59,6 +113,7 @@ export default function ObservationModal({
     }
   }, [isOpen]);
 
+  // Handle various mouse events for dragging the modal
   const handleMouseDown = (event: React.MouseEvent) => {
     if (modalRef.current) {
       const rect = modalRef.current.getBoundingClientRect();
@@ -90,6 +145,7 @@ export default function ObservationModal({
     setIsDragging(false);
   };
 
+  // Add event listeners for dragging
   useEffect(() => {
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
@@ -102,21 +158,25 @@ export default function ObservationModal({
     };
   }, [isDragging, dragOffset]);
 
+  // Handle family selection
   const handleFamilySelect = (family: string) => {
     setObservationData(prev => ({ ...prev, family }));
     setCurrentStage('group');
   };
 
+  // Handle group selection
   const handleGroupSelect = (group: string) => {
     setObservationData(prev => ({ ...prev, group }));
     setCurrentStage('descriptor');
   };
 
+  // Handle descriptor selection
   const handleDescriptorSelect = (descriptor: string, code: string) => {
     setObservationData(prev => ({ ...prev, descriptor, code }));
     setCurrentStage('details');
   };
 
+  // Handle details submission
   const handleDetailsSubmit = (remark: string, clockPosition: number) => {
     const finalData = {
       ...observationData,
@@ -127,6 +187,7 @@ export default function ObservationModal({
     onClose();
   };
 
+  // Handle back navigation in the modal
   const handleBack = () => {
     switch (currentStage) {
       case 'group':
@@ -144,6 +205,7 @@ export default function ObservationModal({
     }
   };
 
+  // Handle breadcrumb clicks to navigate back to previous stages
   const handleBreadcrumbClick = (stage: MenuStage) => {
     switch (stage) {
       case 'family':
@@ -175,6 +237,7 @@ export default function ObservationModal({
     }
   };
 
+  // Generate breadcrumb string based on current observation data
   const getBreadcrumb = () => {
     const parts = [];
     if (observationData.family) parts.push(observationData.family);
@@ -184,7 +247,8 @@ export default function ObservationModal({
   };
 
   if (!isOpen) return null;
-
+  
+  // Modal styles and structure
   return (
     <div style={{
       position: 'fixed',

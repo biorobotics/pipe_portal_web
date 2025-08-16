@@ -1,21 +1,51 @@
+/**
+ * @fileoverview JobNavLabels component for rendering navigation labels/tabs in the JobNavigationBar component.
+ * Handles selection, hover, and navigation logic for each label.
+ * Uses client-side rendering.
+ */
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+/**
+ * Props for the JobNavLabels component.
+ * @property labels - Array of label strings to display as navigation tabs.
+ * @property selectedLabel - The currently selected label.
+ * @property onLabelClick - Callback when a label is clicked.
+ */
 interface JobNavLabelsProps {
   labels: string[];
   selectedLabel: string;
   onLabelClick: (label: string) => void;
 }
 
+
+/**
+ * JobNavLabels component for rendering navigation labels/tabs for job navigation.
+ * Handles selection, hover, and navigation logic for each label.
+ *
+ * @param param0 - The props for the JobNavLabels component.
+ * @returns The JobNavLabels component.
+ * @remark This component is used within the JobNavigationBar to display job navigation tabs.
+ * It allows users to click on labels to navigate to different sections of the job interface.
+ */
 export default function JobNavLabels({ labels, selectedLabel, onLabelClick }: JobNavLabelsProps) {
+  /**
+   * The label currently being hovered, or null if none.
+   */
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
+  /**
+   * Next.js router for navigation.
+   */
   const router = useRouter();
 
+  /**
+   * Handles label click: triggers callback and navigates if needed.
+   * @param label - The label that was clicked.
+   */
   const handleLabelClick = (label: string) => {
     onLabelClick(label);
-    
     // Navigate based on label
     if (label === 'Data') {
       router.push('/');
@@ -24,13 +54,16 @@ export default function JobNavLabels({ labels, selectedLabel, onLabelClick }: Jo
     }
   };
 
+  /**
+   * Get the style object for a label based on its state.
+   * @param label - The label to style.
+   * @return The style object for the label.
+   */
   const getLabelStyle = (label: string) => {
     const isSelected = selectedLabel === label;
     const isHovered = hoveredLabel === label;
-    
     let background = 'transparent';
     let border = '0.26vh solid transparent';
-    
     if (isSelected && isHovered) {
       background = 'rgba(36, 36, 36, 0.1)'; // Dark transparent background
       border = '0.26vh solid #242424';
@@ -41,7 +74,6 @@ export default function JobNavLabels({ labels, selectedLabel, onLabelClick }: Jo
       background = 'rgba(36, 36, 36, 0.1)'; // Dark transparent background
       border = '0.26vh solid transparent';
     }
-
     return {
       padding: '0.52vh 1.56vw',
       background,
@@ -78,4 +110,4 @@ export default function JobNavLabels({ labels, selectedLabel, onLabelClick }: Jo
       ))}
     </div>
   );
-} 
+}

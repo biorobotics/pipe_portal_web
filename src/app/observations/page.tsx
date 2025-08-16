@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Observations page with navigation and content area.
+ * Contains Work Order Explorer, Entity Buttons, and Add Observation button.
+ * Uses JobNavigationContext for managing job selection.
+ */
+
 'use client';
 
 import BackButton from "../../components/BackButton";
@@ -8,6 +14,9 @@ import EntityButton from "../../components/EntityButton";
 import { JobNavigationProvider, useJobNavigation } from "../../contexts/JobNavigationContext";
 import React from "react";
 
+/**
+ * @returns - The observations page with navigation and content area
+ */
 export default function ObservationsPage() {
   return (
     <JobNavigationProvider>
@@ -16,10 +25,14 @@ export default function ObservationsPage() {
   );
 }
 
+/**
+ * 
+ * @returns - The main content of the observations page
+ */
 function ObservationsPageContent() {
   const { setSelectedJobLabel } = useJobNavigation();
   
-  // Set Observations as selected when component mounts
+  // Set the Observations label in the Job Navigation Bar to selected
   React.useEffect(() => {
     setSelectedJobLabel('Observations');
   }, [setSelectedJobLabel]);
@@ -66,9 +79,8 @@ function ObservationsPageContent() {
         left: 0,
         width: '17.188vw', // Same width as work order explorer
         height: `calc(100vh - ${(64/776*100).toFixed(3)}vh - ${(40/776*100).toFixed(3)}vh - 70vh)`, // Fill remaining viewport height
-        background: '#484848', // Match the new color scheme
-        borderLeft: '0.130vw solid #7C7C7C',
-        zIndex: 5
+        background: '#484848',
+        borderLeft: '0.130vw solid #7C7C7C'
       }}>
         {/* Separator line */}
         <div style={{
@@ -85,7 +97,7 @@ function ObservationsPageContent() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          gap: '1.042vw' // Add more spacing between buttons
+          gap: '1.042vw'
         }}>
           <EntityButton 
             label="Pipe" 
@@ -127,7 +139,7 @@ function ObservationsPageContent() {
         color: "#242424",
         fontFamily: "var(--font-roboto), Roboto, Arial, sans-serif"
       }}>
-        {/* Space reserved for videos and line graph */}
+        {/* Space reserved for other observations gallery */}
         
       </div>
     </div>

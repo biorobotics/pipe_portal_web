@@ -1,13 +1,27 @@
+/**
+ * @fileoverview GroupMenu component for selecting a PACP group based on the selected family.
+ * Fetches group options from a JSON file or uses fallback data if unavailable.
+ * Uses BaseMenu for UI rendering.
+ */
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import BaseMenu from './BaseMenu';
 
+/**
+ * Props for GroupMenu component.
+ * @property family - The selected PACP family name.
+ * @property onSelect - Callback when a group is selected.
+ */
 interface GroupMenuProps {
   family: string;
   onSelect: (group: string) => void;
 }
 
+/**
+ * Type for 2 layer PACP data structure loaded from JSON.
+ */
 interface PACPData {
   name: string;
   children: Array<{
@@ -16,11 +30,20 @@ interface PACPData {
   }>;
 }
 
+/**
+ * GroupMenu component for selecting a PACP group based on the selected family.
+ * @param param0 - The props for the GroupMenu component.
+ * @returns GroupMenu component.
+ */
 export default function GroupMenu({ family, onSelect }: GroupMenuProps) {
+  // List of group options to display.
+  // This state will hold the groups available for the selected family.
   const [groups, setGroups] = useState<Array<{ name: string }>>([]);
 
+  // Effect to fetch PACP codes and filter by family
+  // If fetch fails, it uses fallback data.
   useEffect(() => {
-    // Load PACP data and filter by family
+    // Load PACP codes json and filter by family
     fetch('/pacp_codes.json')
       .then(response => response.json())
       .then((data: PACPData) => {

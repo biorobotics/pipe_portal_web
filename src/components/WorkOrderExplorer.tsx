@@ -1,25 +1,56 @@
+/**
+ * @fileoverview WorkOrderExplorer component for browsing and searching work orders and jobs.
+ * Displays a searchable, expandable list of work orders and their jobs, allowing selection and expansion
+ * similar to the Windows File Explorer left sidebar.
+ * Used to navigate and select jobs in the portal UI.
+ * Uses client-side rendering.
+ */
 'use client';
 
 import { useState } from 'react';
 import WorkOrderItem from './WorkOrderItem';
 import JobItem from './JobItem';
 
+/**
+ * Work order data structure.
+ * @property id - Unique identifier for the work order.
+ * @property name - Name of the work order.
+ * @property jobs - Array of jobs under this work order.
+ */
 interface WorkOrder {
   id: string;
   name: string;
   jobs: Job[];
 }
 
+
+/**
+ * Job data structure.
+ * @property id - Unique identifier for the job.
+ * @property name - Name of the job.
+ */
 interface Job {
   id: string;
   name: string;
 }
 
+
+/**
+ * Props for the WorkOrderExplorer component.
+ * @property onWorkOrderSelect - Optional callback when a work order is selected.
+ * @property onJobSelect - Optional callback when a job is selected.
+ */
 interface WorkOrderExplorerProps {
   onWorkOrderSelect?: (workOrderId: string) => void;
   onJobSelect?: (jobId: string) => void;
 }
 
+/**
+ * WorkOrderExplorer component for browsing and searching work orders and jobs.
+ * Displays a searchable, expandable list of work orders and their jobs, allowing selection and expansion.
+ * @param param - The props for the WorkOrderExplorer component.
+ * @returns The work order explorer UI.
+ */
 export default function WorkOrderExplorer({ 
   onWorkOrderSelect, 
   onJobSelect 
@@ -68,21 +99,30 @@ export default function WorkOrderExplorer({
     wo.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleJobSelect = (jobId: string) => {
+
+  /**
+   * Handles job selection, updates state, expands the relevant work order, and triggers callback.
+   * @param jobId - The ID of the selected job.
+   */
+  const handleJobSelect = (jobId: string): void => {
     setSelectedJob(jobId);
-    
     // Find the work order that contains this job and expand it
     const workOrder = workOrders.find(wo => wo.jobs.some(job => job.id === jobId));
     if (workOrder) {
       setExpandedWorkOrders(prev => prev.includes(workOrder.id) ? prev : [...prev, workOrder.id]);
     }
-    
     if (onJobSelect) {
       onJobSelect(jobId);
     }
   };
 
-  const handleWorkOrderToggle = (workOrderId: string, expanded: boolean) => {
+
+  /**
+   * Handles toggling the expansion state of a work order.
+   * @param workOrderId - The ID of the work order to toggle.
+   * @param expanded - Whether the work order should be expanded.
+   */
+  const handleWorkOrderToggle = (workOrderId: string, expanded: boolean): void => {
     setExpandedWorkOrders(prev => {
       if (expanded) {
         return prev.includes(workOrderId) ? prev : [...prev, workOrderId];

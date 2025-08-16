@@ -1,7 +1,19 @@
+/**
+ * @fileoverview DataSection component for displaying geographic and pipe data at the current time.
+ * Allows toggling between decimal and DMS formats for latitude and longitude.
+ */
+
 'use client';
 
 import { useState } from 'react';
 
+/**
+ * Properties for DataSection component.
+ * @property latitude - The robot's latitude at the current time.
+ * @property longitude - The robot's longitude at the current time.
+ * @property altitude - The robot's altitudee at the current time.
+ * @property pipeDiameter - The pipe's diameter at the current time.
+ */
 interface DataSectionProps {
   latitude: number;
   longitude: number;
@@ -9,14 +21,26 @@ interface DataSectionProps {
   pipeDiameter: number;
 }
 
+/**
+ * DataSection component for displaying geographic and pipe data at the current time.
+ * @param param0 - The properties for the DataSection component.
+ * @returns DataSection component.
+ */
 export default function DataSection({ 
   latitude, 
   longitude, 
   altitude, 
   pipeDiameter 
 }: DataSectionProps) {
+  // State to manage coordinate format (decimal or DMS), where default is decimal
   const [coordinateFormat, setCoordinateFormat] = useState<'decimal' | 'dms'>('decimal');
 
+  /**
+   * Takes a latitude number and formats it to either decimal or DMS.
+   * @param lat - The latitude to format.
+   * @param format - The format to use ('decimal' or 'dms').
+   * @returns The formatted latitude string.
+   */
   const formatLatitude = (lat: number, format: 'decimal' | 'dms') => {
     if (format === 'decimal') {
       return lat.toFixed(6);
@@ -30,6 +54,12 @@ export default function DataSection({
     }
   };
 
+  /**
+   * Takes a longitude number and formats it to either decimal or DMS.
+   * @param lng - The longitude to format.
+   * @param format - The format to use ('decimal' or 'dms').
+   * @returns The formatted longitude string.
+   */
   const formatLongitude = (lng: number, format: 'decimal' | 'dms') => {
     if (format === 'decimal') {
       return lng.toFixed(6);
@@ -43,6 +73,9 @@ export default function DataSection({
     }
   };
 
+  /**
+   * Toggles the coordinate format between decimal and DMS.
+   */
   const toggleFormat = () => {
     setCoordinateFormat(coord => coord === 'decimal' ? 'dms' : 'decimal');
   };
@@ -77,7 +110,7 @@ export default function DataSection({
         
         {/* Format Toggle Button */}
         <button
-          onClick={toggleFormat}
+          onClick={toggleFormat} // Change format on click
           style={{
             background: '#484848',
             border: `${(1/1536*100).toFixed(3)}vw solid #D0D0D0`,
@@ -91,13 +124,13 @@ export default function DataSection({
             width: `${(80/1536*100).toFixed(3)}vw`
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#8C8C8C';
+            e.currentTarget.style.background = '#8C8C8C'; // Change background on hover
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = '#484848';
           }}
         >
-          {coordinateFormat === 'decimal' ? 'DMS' : 'Decimal'}
+          {coordinateFormat === 'decimal' ? 'DMS' : 'Decimal'} {/* Toggle text based on current format */}
         </button>
       </div>
 
